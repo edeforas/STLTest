@@ -1,0 +1,16 @@
+/.vs
+/out
+/CMakeSettings.json
+/CMakeFiles
+Debug
+Release
+*filters
+*.vcxproj
+*.user
+*.cmake
+*.depend
+*.stamp
+*.sln
+CMakeCache*
+*.stl
+*.obj
