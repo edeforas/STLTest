@@ -6,6 +6,7 @@
 namespace SolidLibrary
 {
 	Solid* create_octahedron();	
+	Solid* create_cube();
 }
 
 #endif
