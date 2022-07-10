@@ -2,6 +2,19 @@
 
 namespace SolidLibrary
 {
+	Solid* create_tetrahedron()
+	{
+		auto s = new Solid();
+
+		// from https://en.wikipedia.org/wiki/Tetrahedron#Formulas_for_a_regular_tetrahedron
+		s->add_triangle(Triangle(-1, -1, 1, 1, 1, 1, -1, 1, -1));
+		s->add_triangle(Triangle(1, 1, 1, -1, -1, 1, 1, -1, -1));
+		s->add_triangle(Triangle(-1, 1, -1, 1, 1, 1, 1, -1, -1));
+		s->add_triangle(Triangle(-1, -1, 1, -1, 1, -1, 1, -1, -1));
+
+		return s;
+	}
+
 	Solid* create_cube()
 	{
 		auto s = new Solid();
@@ -32,7 +45,6 @@ namespace SolidLibrary
 
 		return s;
 	}
-
 
 	Solid* create_octahedron()
 	{
