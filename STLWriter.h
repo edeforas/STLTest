@@ -5,7 +5,9 @@
 using namespace std;
 
 #include "Solid.h"
-
-bool save_stl(string filename,Solid s);
+namespace STLWriter
+{
+	bool save(string filename, const Solid& s);
+}
 
 #endif

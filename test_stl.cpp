@@ -4,7 +4,11 @@
 ///////////////////////////////////////////////////////////////////////////
 void main()
 {
-	auto s=SolidLibrary::create_octahedron();
-    save_stl("octahedron.stl",*s);
-	delete s;
+	Solid s;
+	auto octa=SolidLibrary::create_octahedron();
+	auto tetra = SolidLibrary::create_tetrahedron();
+
+	s.add_solid(octa);
+	s.add_solid(tetra);
+	STLWriter::save("two_solids.stl",s);
 }
