@@ -1,19 +1,19 @@
 #include "Solid.h"
 
 ///////////////////////////////////////////////////////////////////////////
-Triangle::Triangle(float x1,float y1,float z1,float x2,float y2,float z2,float x3,float y3,float z3)
+Point3::Point3(float x, float y, float z)
 {
-	_x1 = x1;
-	_y1 = y1;
-	_z1 = z1;
-		
-	_x2 = x2;
-	_y2 = y2;
-	_z2 = z2;
-
-	_x3 = x3;
-	_y3 = y3;
-	_z3 = z3;
+	_x = x; _y = y; _z = z;
+}
+///////////////////////////////////////////////////////////////////////////
+Triangle::Triangle(Point3 p1, Point3 p2, Point3 p3)
+{
+	_p1 = p1;	_p2 = p2;	_p3 = p3;
+}
+///////////////////////////////////////////////////////////////////////////
+Quad::Quad(Point3 p1, Point3 p2, Point3 p3, Point3 p4)
+{
+	_p1 = p1;	_p2 = p2;	_p3 = p3; _p4 = p4;
 }
 ///////////////////////////////////////////////////////////////////////////
 Solid::Solid()
@@ -22,6 +22,12 @@ Solid::Solid()
 void Solid::add_triangle(const Triangle& t)
 {
 	_all_triangles.push_back(t);
+}
+
+void Solid::add_quad(const Quad& t)
+{
+	_all_triangles.push_back(Triangle(t._p1,t._p2, t._p3));
+	_all_triangles.push_back(Triangle(t._p3, t._p4, t._p1));
 }
 
 vector<Triangle>& Solid::triangles()

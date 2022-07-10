@@ -5,12 +5,29 @@
 using namespace std;
 
 ///////////////////////////////////////////////////////////////////////////
+class Point3
+{
+public:
+    Point3(float x=0.f, float y=0.f, float z=0.f);
+
+    float _x, _y, _z;
+};
+
+///////////////////////////////////////////////////////////////////////////
 class Triangle
 {
 public:
-	Triangle(float x1,float y1,float z1,float x2,float y2,float z2,float x3,float y3,float z3);
+	Triangle(Point3 p1, Point3 p2, Point3 p3);
 	
-    float _x1, _y1, _z1, _x2, _y2, _z2, _x3, _y3, _z3;
+    Point3 _p1, _p2, _p3;
+};
+///////////////////////////////////////////////////////////////////////////
+class Quad
+{
+public:
+    Quad(Point3 p1, Point3 p2, Point3 p3, Point3 p4);
+
+    Point3 _p1, _p2, _p3, _p4;
 };
 ///////////////////////////////////////////////////////////////////////////
 class Solid
@@ -19,6 +36,7 @@ public:
 	Solid();
         
     void add_triangle(const Triangle& t);
+    void add_quad(const Quad& t);
 	
     vector<Triangle>& triangles();
 

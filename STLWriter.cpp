@@ -28,17 +28,17 @@ bool save_stl(string filename,Solid s)
             f.write((char*)(&zero), 4);
 
         auto& t = a[i];
-        f.write((char*)(&t._x1), 4);
-        f.write((char*)(&t._y1), 4);
-        f.write((char*)(&t._z1), 4);
+        f.write((char*)(&t._p1._x), 4);
+        f.write((char*)(&t._p1._y), 4);
+        f.write((char*)(&t._p1._z), 4);
 
-        f.write((char*)(&t._x2), 4);
-        f.write((char*)(&t._y2), 4);
-        f.write((char*)(&t._z2), 4);
+        f.write((char*)(&t._p2._x), 4);
+        f.write((char*)(&t._p2._y), 4);
+        f.write((char*)(&t._p2._z), 4);
 
-        f.write((char*)(&t._x3), 4);
-        f.write((char*)(&t._y3), 4);
-        f.write((char*)(&t._z3), 4);
+        f.write((char*)(&t._p3._x), 4);
+        f.write((char*)(&t._p3._y), 4);
+        f.write((char*)(&t._p3._z), 4);
 
         f.write((char*)(&zero), 2);
     }
