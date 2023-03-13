@@ -6,16 +6,16 @@
 class Transform
 {
 public:
-    Transform();
+	Transform();
 
-    void set_global_translation(const Point3& translation);
-    void set_global_translation(double x, double y, double z);
-    void reset();
+	void set_global_translation(const Point3& translation);
+	void set_global_translation(double x, double y, double z);
+	void reset();
 
-    void apply(Mesh& m);
+	void apply(Mesh& m);
 
 private:
-    Point3 _translation;
+	Point3 _translation;
 };
 
 #endif

@@ -22,21 +22,21 @@ namespace STLFile
 
         auto iNbTriangles = mesh.nb_triangles();
 
-        // compute the number of valid triangles
-        int iNbTrianglesValid = 0;
-        for (int i = 0; i < mesh.nb_triangles();i++)
-            if (!mesh.is_triangle_deleted(i))
-                iNbTrianglesValid++;
+        int iNbValidTriangles = 0;
+        for (int i = 0; i < mesh.nb_triangles(); i++)
+            if (mesh.is_triangle_unlinked(i) == false)
+                iNbValidTriangles++;
 
         Triangle3 t;
-        f.write((char*)(&iNbTrianglesValid), 4);
+        f.write((char*)(&iNbValidTriangles), 4);
 
         for (int i = 0; i < iNbTriangles; i++)
         {
-            if (mesh.is_triangle_deleted(i))
+            if (mesh.is_triangle_unlinked(i))
                 continue;
 
-            mesh.get_triangle(i, t);
+            Point3 p1, p2, p3;
+            mesh.get_triangle_vertices(i, p1,p2,p3);
 
             // write normals
             f.write((char*)(&fzero), 4);
@@ -44,17 +44,17 @@ namespace STLFile
             f.write((char*)(&fzero), 4);
 
             float p;
-            p = (float)t.p1()._x; f.write((char*)(&p), 4);
-            p = (float)t.p1()._y; f.write((char*)(&p), 4);
-            p = (float)t.p1()._z; f.write((char*)(&p), 4);
+            p = (float)p1._x; f.write((char*)(&p), 4);
+            p = (float)p1._y; f.write((char*)(&p), 4);
+            p = (float)p1._z; f.write((char*)(&p), 4);
 
-            p = (float)t.p2()._x; f.write((char*)(&p), 4);
-            p = (float)t.p2()._y; f.write((char*)(&p), 4);
-            p = (float)t.p2()._z; f.write((char*)(&p), 4);
+            p = (float)p2._x; f.write((char*)(&p), 4);
+            p = (float)p2._y; f.write((char*)(&p), 4);
+            p = (float)p2._z; f.write((char*)(&p), 4);
 
-            p = (float)t.p3()._x; f.write((char*)(&p), 4);
-            p = (float)t.p3()._y; f.write((char*)(&p), 4);
-            p = (float)t.p3()._z; f.write((char*)(&p), 4);
+            p = (float)p3._x; f.write((char*)(&p), 4);
+            p = (float)p3._y; f.write((char*)(&p), 4);
+            p = (float)p3._z; f.write((char*)(&p), 4);
 
             f.write((char*)(&zero), 2);
         }

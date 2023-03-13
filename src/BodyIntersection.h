@@ -12,7 +12,7 @@ public:
 
     void set(Body& A,Body& B);
 
-    virtual void compute_faces() override;
+    virtual void compute_mesh() override;
 
 private:
     Body* _A;

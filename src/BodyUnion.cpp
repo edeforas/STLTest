@@ -4,9 +4,9 @@
 #include "Mesh.h"
 
 ///////////////////////////////////////////////////////////////////////////
-BodyUnion::BodyUnion():
+BodyUnion::BodyUnion() :
 	Body()
-{ 
+{
 	_A = (Body*)nullptr;
 	_B = (Body*)nullptr;
 }
@@ -14,13 +14,13 @@ BodyUnion::BodyUnion():
 BodyUnion::~BodyUnion()
 { }
 
-void BodyUnion::set( Body& A, Body& B)
+void BodyUnion::set(Body& A, Body& B)
 {
 	_A = &A;
 	_B = &B;
 }
 
-void BodyUnion::compute_faces()
+void BodyUnion::compute_mesh()
 {
 	Mesh Aoutside, Boutside, AinB, BinA;
 	MeshBoolean mb;

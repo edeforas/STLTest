@@ -10,6 +10,15 @@ namespace OBJFile
 {   
     bool save(const string& filename, const Mesh& mesh)
     {
+		double colorR=0., colorG=0., colorB=0.;
+		bool bHasColor = mesh.get_color() != -1;
+		if (bHasColor)
+		{
+			colorR = (mesh.get_color() >> 16) / 255.;
+			colorG = ((mesh.get_color()& 0xFF00) >> 8) / 255.;
+			colorB = (mesh.get_color() & 0xFF) / 255.;
+		}
+
         ofstream f(filename);
         if (!f)
             return false;
@@ -19,18 +28,23 @@ namespace OBJFile
 		for (int i = 0; i < mesh.nb_vertices(); i++)
 		{
 			mesh.get_vertex(i, vertex);
-			f << "v " << vertex._x << " " << vertex._y << " " << vertex._z << endl;
+			if(bHasColor)
+				// save color as in: http://paulbourke.net/dataformats/obj/colour.html
+				f << "v " << vertex._x << " " << vertex._y << " " << vertex._z << " " << colorR << " " << colorG << " " << colorB << endl;
+			else
+				f << "v " << vertex._x << " " << vertex._y << " " << vertex._z << endl;
 		}
 		f << endl;
 
 		// write triangle vertices
 		int iVertex1 = 0, iVertex2 = 0, iVertex3 = 0; 
+
 		for (int i = 0; i < mesh.nb_triangles(); i++)
 		{
-			if (mesh.is_triangle_deleted(i))
+			if (mesh.is_triangle_unlinked(i))
 				continue;
 
-			mesh.get_triangle(i, iVertex1, iVertex2, iVertex3);
+			mesh.get_triangle_vertices(i, iVertex1, iVertex2, iVertex3);
 			f << "f " << iVertex1 + 1 << " " << iVertex2 + 1 << " " << iVertex3 + 1 << endl;
 		}
 

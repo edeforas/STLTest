@@ -2,7 +2,7 @@
 
 #include "MeshTessellate.h"
 
-#include <cmath> // sin, cos for Cylinder and Sphere
+#include <cmath>
 using namespace std;
 
 namespace BodyFactory
@@ -12,7 +12,7 @@ namespace BodyFactory
 	{
 		_size = dSize;
 	}
-	void Tetrahedron::compute_faces()
+	void Tetrahedron::compute_mesh()
 	{
 		if (!_mesh.empty())
 			return;
@@ -34,7 +34,7 @@ namespace BodyFactory
 	{
 		_xSize = xSize; _ySize = ySize; _zSize = zSize;
 	}
-	void Box::compute_faces()
+	void Box::compute_mesh()
 	{
 		if (!_mesh.empty())
 			return;
@@ -66,7 +66,7 @@ namespace BodyFactory
 	{
 		_size = dSize;
 	}
-	void Octahedron::compute_faces()
+	void Octahedron::compute_mesh()
 	{
 		if (!_mesh.empty())
 			return;
@@ -94,7 +94,7 @@ namespace BodyFactory
 	{
 		_size = dSize;
 	}
-	void Dodecahedron::compute_faces()
+	void Dodecahedron::compute_mesh()
 	{
 		if (!_mesh.empty())
 			return;
@@ -156,7 +156,7 @@ namespace BodyFactory
 	{
 		_size = dSize;
 	}
-	void Icosahedron::compute_faces()
+	void Icosahedron::compute_mesh()
 	{
 		if (!_mesh.empty())
 			return;
@@ -214,7 +214,7 @@ namespace BodyFactory
 	{
 		_height = height; _diameter = diameter;
 	}
-	void Cylinder::compute_faces()
+	void Cylinder::compute_mesh()
 	{
 		if (!_mesh.empty())
 			return;
@@ -259,55 +259,112 @@ namespace BodyFactory
 		_transform.apply(_mesh);
 	}
 	///////////////////////////////////////////////////////////////////////////
-	Sphere::Sphere(double diameter, int iLevelOfDetails)
+	SphereGeodesic::SphereGeodesic(double radius)
 	{
-		_diameter = diameter;
-		_iLevelOfDetails = iLevelOfDetails;
+		_radius = radius;
 	}
-	void Sphere::compute_faces()
+	void SphereGeodesic::compute_mesh()
 	{
 		if (!_mesh.empty())
 			return;
 
+		Icosahedron ico(_radius);
 		Mesh m;
-		Icosahedron ico(1.);
 		MeshTessellate mt;
-		mt.compute(ico.mesh(), _iLevelOfDetails, _mesh);
-
-		//scale _mesh vertices
-		for (int i = 0; i < _mesh.nb_vertices(); i++)
-		{
-			Point3 v;
-			_mesh.get_vertex(i, v);
-			v = v.normalized() * (_diameter / 2.);
-			_mesh.set_vertex(i, v);
-		}
+		mt.compute(ico.mesh(), _iNbSegments, _mesh);
 
 		_transform.apply(_mesh);
 	}
 	///////////////////////////////////////////////////////////////////////////
-	Torus::Torus(double dMajorRadius,double dMinorRadius)
+	SphereUV::SphereUV(double radius)
 	{
-		_dMajorRadius = dMajorRadius;	_dMinorRadius = dMinorRadius;
+		_radius = radius;
 	}
-	void Torus::compute_faces()
+	void SphereUV::compute_mesh()
 	{
 		if (!_mesh.empty())
 			return;
 
 		double PI = 3.14159265358979323846264338; // TODO
 
-		int iNbSegmentLongitude = _iNbSegments / 2;
-		int iNbSegmentLatitude = _iNbSegments / 4;
+		int iNbSegmentLongitude = _iNbSegments;
+		int iNbSegmentLatitude = _iNbSegments/2;
 
 		// create vertices
-		for (int longitude = 0; longitude < iNbSegmentLongitude; longitude++) //longitude
+		for (int longitude = 0; longitude < iNbSegmentLongitude; longitude++)
 		{
 			double upi = (double)longitude / iNbSegmentLongitude * 2. * PI;
 
-			for (int latitude = 0; latitude < iNbSegmentLatitude; latitude++) //latitude
+			for (int latitude = 1; latitude < iNbSegmentLatitude; latitude++)
 			{
-				double vpi = (double)latitude / iNbSegmentLatitude * 2.* PI;
+				double vpi = (double)latitude / iNbSegmentLatitude * PI;
+
+				// compute parametric point from: https://en.wikipedia.org/wiki/Sphere
+				Point3 p;
+				p._x = _radius * std::sin(vpi) * std::cos(upi);
+				p._y = _radius * std::sin(vpi) * std::sin(upi);
+				p._z = _radius * std::cos(vpi);
+
+				_mesh.add_vertex(p);
+			}
+		}
+		_mesh.add_vertex(0, 0, _radius); // pole north
+		_mesh.add_vertex(0, 0, -_radius); //pole south
+
+		// associates quads to vertices
+		int iNbVertexLatitude = iNbSegmentLatitude - 1; //poles removed
+		//int iNbVertex = _mesh.nb_vertices()-2; // poles removed
+		int iPoleNorth = _mesh.nb_vertices() - 2;
+		int iPoleSouth= _mesh.nb_vertices() - 1;
+
+		for (int longitude = 0; longitude < iNbSegmentLongitude; longitude++)
+		{
+			// add first trig
+			int iLongitude1 = longitude;
+			int iLongitude2 = (longitude+1)% iNbSegmentLongitude;
+
+			// make north pole
+			_mesh.add_triangle(iPoleNorth, iLongitude1 * iNbVertexLatitude, iLongitude2 * iNbVertexLatitude);
+			
+			for (int latitude = 1; latitude < iNbVertexLatitude ; latitude++)
+			{
+				_mesh.add_quad(
+					iLongitude1 * iNbVertexLatitude + latitude-1,
+					iLongitude1 * iNbVertexLatitude + latitude,
+					iLongitude2 * iNbVertexLatitude + latitude,
+					iLongitude2 * iNbVertexLatitude + latitude - 1
+					);
+			}
+			
+			// make south pole
+			_mesh.add_triangle( iLongitude1 * iNbVertexLatitude+ iNbVertexLatitude-1, iPoleSouth, iLongitude2 * iNbVertexLatitude+ iNbVertexLatitude-1);
+		}
+
+		_transform.apply(_mesh);
+	}
+	///////////////////////////////////////////////////////////////////////////
+	Torus::Torus(double dMajorRadius, double dMinorRadius)
+	{
+		_dMajorRadius = dMajorRadius;	_dMinorRadius = dMinorRadius;
+	}
+	void Torus::compute_mesh()
+	{
+		if (!_mesh.empty())
+			return;
+
+		double PI = 3.14159265358979323846264338; // TODO
+
+		int iNbSegmentLongitude = _iNbSegments;
+		int iNbSegmentLatitude = _iNbSegments / 2;
+
+		// create vertices
+		for (int longitude = 0; longitude < iNbSegmentLongitude; longitude++) 
+		{
+			double upi = (double)longitude / iNbSegmentLongitude * 2. * PI;
+
+			for (int latitude = 0; latitude < iNbSegmentLatitude; latitude++)
+			{
+				double vpi = (double)latitude / iNbSegmentLatitude * 2. * PI;
 
 				// compute parametric point from: https://en.wikipedia.org/wiki/Torus
 				Point3 p;
