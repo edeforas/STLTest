@@ -10,11 +10,12 @@ int main()
 {
 	Mesh m;
 
-	for (int iLevel = 0; iLevel < 7; iLevel++)
+	for (int iLevel = 2; iLevel < 7; iLevel++)
 	{
 		cout << "Generating sphere with level of details=" << iLevel << endl;
-		BodyFactory::Sphere sphere(100., iLevel);
-		sphere.transform().set_global_translation(Point3(iLevel*150., 0., 0.));
+		BodyFactory::SphereUV sphere(50); // for now sphereUV, will be replaced by sphere geodesic
+		sphere.set_precision(2<<iLevel);
+		sphere.transform().set_global_translation(Point3(120.*iLevel, 0., 0.));
 		m.add_mesh(sphere.mesh());
 	}
 

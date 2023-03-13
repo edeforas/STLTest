@@ -1,38 +1,36 @@
-#include "BodyIntersection.h"
+#include "BodyDifference.h"
 
 #include "MeshBoolean.h"
 #include "Mesh.h"
 
 ///////////////////////////////////////////////////////////////////////////
-BodyIntersection::BodyIntersection():
+BodyDifference::BodyDifference():
 	Body()
 { 
 	_A = ( Body*)nullptr;
 	_B = ( Body*)nullptr;
 }
 
-BodyIntersection::~BodyIntersection()
+BodyDifference::~BodyDifference()
 { }
 
-void BodyIntersection::set( Body& A, Body& B)
+void BodyDifference::set( Body& A, Body& B)
 {
 	_A = &A;
 	_B = &B;
 }
 
-void BodyIntersection::compute_mesh()
+void BodyDifference::compute_mesh()
 {
 	Mesh Aonly, Bonly, AinB, BinA;
 	MeshBoolean mb;
 	mb.split_meshes(_A->mesh(), _B->mesh(), Aonly, Bonly, AinB, BinA);
 
+	_mesh = Aonly;
+	
 	for (int i = 0; i < AinB.nb_triangles(); i++)
 		AinB.flip_triangle(i);
-
-	for (int i = 0; i < BinA.nb_triangles(); i++)
-		BinA.flip_triangle(i);
-
-	_mesh = AinB;
-	_mesh.add_mesh(BinA);
+	
+	_mesh.add_mesh(AinB);
 }
 ///////////////////////////////////////////////////////////////////////////

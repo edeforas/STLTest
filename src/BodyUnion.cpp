@@ -20,7 +20,7 @@ void BodyUnion::set( Body& A, Body& B)
 	_B = &B;
 }
 
-void BodyUnion::compute_faces()
+void BodyUnion::compute_mesh()
 {
 	Mesh Aoutside, Boutside, AinB, BinA;
 	MeshBoolean mb;

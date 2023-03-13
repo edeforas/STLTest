@@ -1,14 +1,14 @@
-#ifndef _BodyUnion_
-#define _BodyUnion_
+#ifndef BodyDifference_
+#define BodyDifference_
 
 #include "Body.h"
 
 ///////////////////////////////////////////////////////////////////////////
-class BodyUnion: public Body
+class BodyDifference: public Body
 {
 public:
-    BodyUnion();
-    virtual ~BodyUnion();
+    BodyDifference();
+    virtual ~BodyDifference();
 
     void set(Body& A,Body& B);
 

@@ -1,24 +1,32 @@
 #include "BodyFactory.h"
 #include "BodyUnion.h"
+#include "BodyDifference.h"
 #include "BodyIntersection.h"
 
-#include "STLFile.h"
+#include "OBJFile.h"
 
 ///////////////////////////////////////////////////////////////////////////
 int main()
 {
-	BodyFactory::Sphere sphere(100.);
-	BodyFactory::Sphere sphere2(150.);
+	BodyFactory::SphereUV sphere(50.);
+	BodyFactory::SphereUV sphere2(70.);
 
-	sphere2.transform().set_global_translation(60., 10., 20.);
+	sphere2.transform().set_global_translation(10., 25., 40.);
+
+	sphere.set_color(RGB(255, 0, 0));
+	sphere2.set_color(RGB(0, 255, 0));
 
 	BodyUnion bu;
 	bu.set(sphere, sphere2);
-	STLFile::save("two_spheres_union.stl", bu.mesh());
+	OBJFile::save("two_spheres_union.obj", bu.mesh());
 
 	BodyIntersection bi;
 	bi.set(sphere, sphere2);
-	STLFile::save("two_spheres_intersection.stl", bi.mesh());
+	OBJFile::save("two_spheres_intersection.obj", bi.mesh());
+
+	BodyDifference bd;
+	bd.set(sphere, sphere2);
+	OBJFile::save("two_spheres_difference.obj", bd.mesh());
 
 	return 0;
 }

@@ -1,5 +1,6 @@
 #include "BodyFactory.h"
 #include "STLFile.h"
+
 #include "Mesh.h"
 
 #include <iostream>
@@ -12,25 +13,22 @@ int main()
 	cout << "Test Start." << endl;
 
 	{
-		// test triangles fliped and deleted
-		BodyFactory::Sphere sphere(100., 5);
+		// test triangles deleted
+		BodyFactory::SphereUV sphere(100.);
 		Mesh& m = sphere.mesh();
 		for (int i = 0; i < m.nb_triangles(); i++)
 		{
 			if (rand() / (float)RAND_MAX > 0.5)
-				m.flip_triangle(i);
-
-			if (rand() / (float)RAND_MAX > 0.5)
-				m.delete_triangle(i); //does not delete, only unlink
+				m.unlink_triangle(i);
 		}
-		STLFile::save("sphere_triangles_flipped_deleted.stl", m);
+
+		STLFile::save("sphere_triangles_deleted.stl", m);
 	}
 
 	{
 		// test triangles subdivision
-		BodyFactory::Sphere sphere(100.);
+		BodyFactory::SphereGeodesic sphere(100.);
 		Mesh& m = sphere.mesh();
-
 		int iNbTriangles = m.nb_triangles(); // only changing the old triangles, not the created 
 		for (int i = 0; i < iNbTriangles; i++)
 		{
@@ -41,7 +39,7 @@ int main()
 			m.split_triangle_with_vertex(i, iNewVertex);
 		}
 
-		STLFile::save("sphere_triangles_subdivflat.stl", m);
+		STLFile::save("sphere_triangles_subdiv.stl", m);
 	}
 
 	cout << "Test Finished.";

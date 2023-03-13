@@ -11,7 +11,7 @@ namespace BodyFactory
     public:
         explicit Tetrahedron(double dSize);
 
-        virtual void compute_faces() override;
+        virtual void compute_mesh() override;
 
     private:
         double _size;
@@ -22,7 +22,7 @@ namespace BodyFactory
     public:
         explicit Box(double xSize, double ySize, double zSize);
 
-        virtual void compute_faces() override;
+        virtual void compute_mesh() override;
 
     private:
         double _xSize, _ySize, _zSize;
@@ -33,7 +33,7 @@ namespace BodyFactory
     public:
         explicit Octahedron(double dSize);
 
-        virtual void compute_faces() override;
+        virtual void compute_mesh() override;
 
     private:
         double _size;
@@ -44,7 +44,7 @@ namespace BodyFactory
     public:
         explicit Dodecahedron(double dSize);
 
-        virtual void compute_faces() override;
+        virtual void compute_mesh() override;
 
     private:
         double _size;
@@ -55,7 +55,7 @@ namespace BodyFactory
     public:
         explicit Icosahedron(double dSize);
 
-        virtual void compute_faces() override;
+        virtual void compute_mesh() override;
 
     private:
         double _size;
@@ -66,22 +66,32 @@ namespace BodyFactory
     public:
         explicit Cylinder(double height, double diameter);
 
-        virtual void compute_faces() override;
+        virtual void compute_mesh() override;
 
     private:
         double _height, _diameter;
     };
     ///////////////////////////////////////////////////////////////////////////
-    class Sphere : public Body
+    class SphereGeodesic : public Body
     {
     public:
-        explicit Sphere(double diameter, int iLevelOfDetails=3);
+        explicit SphereGeodesic(double radius);
 
-        virtual void compute_faces() override;
+        virtual void compute_mesh() override;
 
     private:
-        double _diameter;
-        int _iLevelOfDetails;
+        double _radius;
+    };
+    ///////////////////////////////////////////////////////////////////////////
+    class SphereUV : public Body
+    {
+    public:
+        explicit SphereUV(double radius);
+
+        virtual void compute_mesh() override;
+
+    private:
+        double _radius;
     };
     ///////////////////////////////////////////////////////////////////////////
     class Torus : public Body
@@ -89,11 +99,12 @@ namespace BodyFactory
     public:
         Torus(double dMajorRadius, double dMinorRadius);
 
-        virtual void compute_faces() override;
+        virtual void compute_mesh() override;
 
     private:
         double _dMajorRadius,_dMinorRadius;
     };
     ///////////////////////////////////////////////////////////////////////////
+
 }
 #endif

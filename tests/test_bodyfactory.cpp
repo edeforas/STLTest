@@ -7,7 +7,7 @@ int main()
 {
 	// build and save objects
 	Mesh m;
-
+	
 	BodyFactory::Tetrahedron tetrahedron(25.);
 	m.add_mesh(tetrahedron.mesh());
 
@@ -30,17 +30,21 @@ int main()
 	BodyFactory::Icosahedron icosahedron(30.);
 	icosahedron.transform().set_global_translation(Point3(200, 100, 0.));
 	m.add_mesh(icosahedron.mesh());
-
-	BodyFactory::Sphere sphere(70.);
-	sphere.transform().set_global_translation(Point3(0., 200., 0));
+	
+	BodyFactory::SphereGeodesic sphere(30.);
+	sphere.transform().set_global_translation(Point3(100., 200., 0));
 	m.add_mesh(sphere.mesh());
-
+	
+	BodyFactory::SphereUV sphereUV(30.);
+	//sphereUV.set_precision(16);
+	sphereUV.transform().set_global_translation(Point3(0., 200., 0));
+	m.add_mesh(sphereUV.mesh());
+	
 	BodyFactory::Torus torus(25.,10.);
-	torus.transform().set_global_translation(Point3(100., 200., 0.));
+	torus.transform().set_global_translation(Point3(200., 200., 0.));
 	m.add_mesh(torus.mesh());
-
+	
 	STLFile::save("body_factory.stl", m);
-
 	return 0;
 }
 ///////////////////////////////////////////////////////////////////////////

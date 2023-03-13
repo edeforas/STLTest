@@ -9,7 +9,7 @@ int main()
 {
 	// build object
 	BodyFactory::Cylinder cylinder(100., 40.);
-	BodyFactory::Sphere sphere(70.);
+	BodyFactory::SphereUV sphere(70.);
 
 	BodyUnion bu;
 	bu.set(cylinder,sphere);

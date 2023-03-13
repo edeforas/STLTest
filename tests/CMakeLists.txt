@@ -17,3 +17,12 @@ target_link_libraries(test_level_of_details libSTLTest)
 
 add_executable(test_meshoperations test_meshoperations.cpp  )
 target_link_libraries(test_meshoperations libSTLTest)
+
+add_executable(test_measurements test_measurements.cpp  )
+target_link_libraries(test_measurements libSTLTest)
+
+add_executable(test_Engine3D test_Renderer.cpp )
+target_link_libraries(test_Engine3D libSTLTest)
+
+add_executable(test_BMPFile test_BMPFile.cpp  )
+target_link_libraries(test_BMPFile libSTLTest)

@@ -1,109 +1,137 @@
 #include "Mesh.h"
 
 #include <cassert>
-#include <algorithm>
 
-inline double square(double a)
-{ return a*a; }
+#include "MeshKernelTIN.h"
+#include "MeshKernelHalfEdge.h"
+#include "MeshKernelLinkedTriangles.h"
 
-///////////////////////////////////////////////////////////////////////////
-Triangle::Triangle(int vertex1, int vertex2, int vertex3)
-{
-	this->vertex1 = vertex1; this->vertex2 = vertex2; this->vertex3 = vertex3;
-	state = 1; // 1=Valid; 0=deleted
-}
-
-bool Triangle::is_triangle_deleted() const
-{
-	return state==0;
-}
-void Triangle::flip()
-{
-	int iV1 = vertex1;
-	vertex1 = vertex2;
-	vertex2 = iV1;
-}
 ///////////////////////////////////////////////////////////////////////////
 Mesh::Mesh()
-{ }
+{ 
+	//_pKernel=new MeshKernelTIN;
+	//_pKernel =new MeshKernelHalfEdge;
+	_pKernel = new MeshKernelLinkedTriangles;
+	_iColor = -1;
+}
+
+Mesh::Mesh(const Mesh& m)
+{
+	this->operator=(m);
+}
 
 Mesh::~Mesh()
-{ }
+{ 
+	delete _pKernel;
+}
+
+void Mesh::set_color(int iColor)
+{
+	_iColor = iColor;
+}
+
+int Mesh::get_color() const
+{
+	return _iColor;
+}
 
 int Mesh::nb_triangles() const
 {
-	return (int)_vTriangles.size();
+	return _pKernel->nb_triangles();
+}
+
+bool Mesh::is_triangle_unlinked(int iTriangle) const
+{
+	assert(iTriangle >= 0);
+	assert(iTriangle < _pKernel->nb_triangles());
+
+	return _pKernel->is_triangle_unlinked(iTriangle);
+}
+void Mesh::get_near_triangles(int iTriangle, int& iT1, int& iT2, int& iT3) const
+{
+	assert(iTriangle >= 0);
+	assert(iTriangle < _pKernel->nb_triangles());
+
+	return _pKernel->get_near_triangles(iTriangle,iT1,iT2,iT3);
 }
 ///////////////////////////////////////////////////////////////////////////
 void Mesh::get_triangle(int iTriangle, Triangle3& f) const
 {
-	assert(iTriangle < (int)_vTriangles.size());
+	assert(iTriangle >= 0);
+	assert(iTriangle < _pKernel->nb_triangles());
 
 	int iP1, iP2, iP3;
 	get_triangle(iTriangle, iP1, iP2, iP3);
 	
-	f.set_p1(_vVertices[iP1].vertex);
-	f.set_p2(_vVertices[iP2].vertex);
-	f.set_p3(_vVertices[iP3].vertex);
+	Point3 v1,v2,v3;
+	_pKernel->get_vertex(iP1,v1);
+	_pKernel->get_vertex(iP2,v2);
+	_pKernel->get_vertex(iP3,v3);
+	
+	f.set_p1(v1);
+	f.set_p2(v2);
+	f.set_p3(v3);
 }
 
 void Mesh::get_triangle(int iTriangle, int& iVertex1, int& iVertex2, int& iVertex3) const
 {
-	assert(iTriangle < (int)_vTriangles.size());
+	assert(iTriangle >= 0);
+	assert(iTriangle < _pKernel->nb_triangles());
 
-	iVertex1 = _vTriangles[iTriangle].vertex1;
-	iVertex2 = _vTriangles[iTriangle].vertex2;
-	iVertex3 = _vTriangles[iTriangle].vertex3;
+	_pKernel->get_triangle(iTriangle,iVertex1,iVertex2,iVertex3);
 }
 
-void Mesh::get_triangle(int iTriangle, Point3 & p1, Point3& p2, Point3& p3) const
+void Mesh::get_triangle(int iTriangle, Point3& p1, Point3& p2, Point3& p3) const
 {
-	assert(iTriangle < (int)_vTriangles.size());
+	assert(iTriangle >= 0);
+	assert(iTriangle < _pKernel->nb_triangles());
 
 	int iP1, iP2, iP3;
 	get_triangle(iTriangle, iP1, iP2, iP3);
 
-	get_vertex(iP1, p1);
-	get_vertex(iP2, p2);
-	get_vertex(iP3, p3);
+	_pKernel->get_vertex(iP1, p1);
+	_pKernel->get_vertex(iP2, p2);
+	_pKernel->get_vertex(iP3, p3);
 }
 
-bool Mesh::is_triangle_deleted(int iTriangle) const
+void Mesh::unlink_triangle(int iTriangle)
 {
-	assert(iTriangle < (int)_vTriangles.size());
-	return _vTriangles[iTriangle].is_triangle_deleted();
+	assert(iTriangle >= 0);
+	assert(iTriangle < _pKernel->nb_triangles());
+
+	_pKernel->unlink_triangle(iTriangle);
 }
 
-void Mesh::delete_triangle(int iTriangle)
+Mesh& Mesh::operator=(const Mesh& m)
 {
-	assert(iTriangle < (int)_vTriangles.size());
+	//todo something quicker
 
-	// set bad state
-	auto& iT = _vTriangles[iTriangle];
-	iT.state = 0;
+	clear();
+	add_mesh(m);
+	set_color(m.get_color());
 
-	//unlink vertex with faces
-	_vVertices[iT.vertex1].remove_triangle(iTriangle);
-	_vVertices[iT.vertex2].remove_triangle(iTriangle);
-	_vVertices[iT.vertex3].remove_triangle(iTriangle);
+	return *this;
 }
 
 void Mesh::add_mesh(const Mesh& f)
 {
 	// todo manage face ids
 
+	//todo manage color by vertex
+	_iColor = f.get_color();
+
 	int iNbVertices = nb_vertices();
 	for (int i = 0; i < f.nb_vertices(); i++)
 	{
 		Point3 v;
 		f.get_vertex(i, v);
-		add_vertex(v);
+		_pKernel->add_vertex(v);
 	}
 
 	int iVertex1, iVertex2, iVertex3;
 	for (int i = 0; i < f.nb_triangles(); i++)
 	{
-		if (f.is_triangle_deleted(i))
+		if (f.is_triangle_unlinked(i))
 			continue;
 
 		f.get_triangle(i, iVertex1, iVertex2, iVertex3);
@@ -113,96 +141,118 @@ void Mesh::add_mesh(const Mesh& f)
 
 int Mesh::add_triangle(int iVertex1, int iVertex2, int iVertex3)
 {
-	// vertices should exist:
-	assert(iVertex1 < (int)_vVertices.size());
-	assert(iVertex2 < (int)_vVertices.size());
-	assert(iVertex3 < (int)_vVertices.size());
+	assert(iVertex1 >= 0);
+	assert(iVertex2 >= 0);
+	assert(iVertex3 >= 0);
 
-	_vTriangles.push_back(Triangle(iVertex1, iVertex2, iVertex3));
+	assert(iVertex1 < _pKernel->nb_vertices());
+	assert(iVertex2 < _pKernel->nb_vertices());
+	assert(iVertex3 < _pKernel->nb_vertices());
 
-	int iTriangle = (int)(_vTriangles.size() - 1); // return the new iTriangle
-	_vVertices[iVertex1].triangles.push_back(iTriangle);
-	_vVertices[iVertex2].triangles.push_back(iTriangle);
-	_vVertices[iVertex3].triangles.push_back(iTriangle);
-
-	return iTriangle;
+	return _pKernel->add_triangle(iVertex1,iVertex2,iVertex3);
 }
 
 void Mesh::add_quad(int iVertex1, int iVertex2, int iVertex3, int iVertex4)
 {
-	add_triangle(iVertex1, iVertex2, iVertex3);
-	add_triangle(iVertex3, iVertex4, iVertex1);
+	assert(iVertex1 >= 0);
+	assert(iVertex2 >= 0);
+	assert(iVertex3 >= 0);
+	assert(iVertex4 >= 0);
+
+	assert(iVertex1 < _pKernel->nb_vertices());
+	assert(iVertex2 < _pKernel->nb_vertices());
+	assert(iVertex3 < _pKernel->nb_vertices());
+	assert(iVertex4 < _pKernel->nb_vertices());
+
+	_pKernel->add_triangle(iVertex1, iVertex2, iVertex3);
+	_pKernel->add_triangle(iVertex3, iVertex4, iVertex1);
 }
 
 void Mesh::add_pentagon(int iVertex1, int iVertex2, int iVertex3, int iVertex4, int iVertex5)
 {
-	add_triangle(iVertex1, iVertex2, iVertex3);
-	add_triangle(iVertex3, iVertex4, iVertex5);
-	add_triangle(iVertex1, iVertex3, iVertex5);
+	assert(iVertex1 >= 0);
+	assert(iVertex2 >= 0);
+	assert(iVertex3 >= 0);
+	assert(iVertex4 >= 0);
+	assert(iVertex5 >= 0);
+
+	assert(iVertex1 < _pKernel->nb_vertices());
+	assert(iVertex2 < _pKernel->nb_vertices());
+	assert(iVertex3 < _pKernel->nb_vertices());
+	assert(iVertex4 < _pKernel->nb_vertices());
+	assert(iVertex5 < _pKernel->nb_vertices());
+
+	_pKernel->add_triangle(iVertex1, iVertex2, iVertex3);
+	_pKernel->add_triangle(iVertex3, iVertex4, iVertex5);
+	_pKernel->add_triangle(iVertex1, iVertex3, iVertex5);
 }
 
 void Mesh::split_triangle_with_vertex(int iTriangle, int iVertex)
 { 
+	assert(iTriangle >= 0);
+	assert(iTriangle < _pKernel->nb_triangles());
+
+	assert(iVertex >= 0);
+	assert(iVertex < _pKernel->nb_vertices());
+
 	//replace triangle with 3 triangles built with iVertex
 	int iV1, iV2, iV3;
-	get_triangle(iTriangle, iV1, iV2, iV3);
-	delete_triangle(iTriangle);
+	_pKernel->get_triangle(iTriangle, iV1, iV2, iV3);
+	_pKernel->unlink_triangle(iTriangle);
 
-	add_triangle(iV1, iV2, iVertex);
-	add_triangle(iV2, iV3, iVertex);
-	add_triangle(iV3, iV1, iVertex);
+	_pKernel->add_triangle(iV1, iV2, iVertex);
+	_pKernel->add_triangle(iV2, iV3, iVertex);
+	_pKernel->add_triangle(iV3, iV1, iVertex);
 }
 
 void Mesh::flip_triangle(int iTriangle)
 { 	
-	assert(iTriangle < (int)_vTriangles.size());
-	_vTriangles[iTriangle].flip();
+	assert(iTriangle >= 0);
+	assert(iTriangle < _pKernel->nb_triangles());
+
+	int iV1, iV2, iV3;
+	_pKernel->get_triangle(iTriangle, iV1, iV2, iV3);
+	_pKernel->unlink_triangle(iTriangle);
+	_pKernel->add_triangle(iV1, iV3, iV2);
 }
 
 void Mesh::clear()
 {
-	_vTriangles.clear();
-	_vVertices.clear();
+	_pKernel->clear();
 }
 
-bool Mesh::empty()
+bool Mesh::empty() const
 {
-	return _vVertices.empty();
+	return _pKernel->nb_triangles()==0;
 }
 
 int Mesh::add_vertex(const Point3& vertex)
 {
-	VertexTriangles vf;
-	vf.vertex = vertex;
-	_vVertices.push_back(vf);
-	return (int)_vVertices.size() - 1;
+	return _pKernel->add_vertex(vertex);
 }
 
 void Mesh::add_vertex(double a, double b, double c)
 {
-	add_vertex(Point3(a, b, c));
+	_pKernel->add_vertex(Point3(a, b, c));
 }
 
 void Mesh::set_vertex(int iVertex, const Point3& vertex)
 {
-	assert(iVertex < (int)_vVertices.size());
-	_vVertices[iVertex].vertex= vertex ;
+	assert(iVertex >= 0);
+	assert(iVertex < _pKernel->nb_vertices());
+
+	_pKernel->set_vertex(iVertex,vertex);
 }
 
 void Mesh::get_vertex(int iVertex, Point3& vertex) const
 {
-	assert(iVertex < (int)_vVertices.size());
-	vertex = _vVertices[iVertex].vertex;
+	assert(iVertex >= 0);
+	assert(iVertex < _pKernel->nb_vertices());
+
+	_pKernel->get_vertex(iVertex,vertex);
 }
 
 int Mesh::nb_vertices() const
 {
-	return (int)_vVertices.size();
-}
-
-void VertexTriangles::remove_triangle(int iTriangle)
-{
-	auto it = find(triangles.begin(),triangles.end(),iTriangle);
-	if (it != triangles.end())
-		triangles.erase(it);
+	return _pKernel->nb_vertices();
 }
