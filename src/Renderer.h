@@ -44,8 +44,8 @@ public:
 	void draw_pixel(const Point3& pPixels, int color);
 
 private:
-	bool draw_trapeze(double ax, double aw, double bx, double bw, double ay, double cx, double cw, double dx, double dw, double cy, int color); //return true if face was visible
-	void draw_horizontal_line(double ax, double aw, double bx, double bw, double y, int color);
+	bool draw_trapeze(double ax, double aw, double bx, double bw, int ay, double cx, double cw, double dx, double dw, int cy, int color); //return true if face was visible
+	void draw_horizontal_line(int ax, double aw, int bx, double bw, int y, int color);
 
 	Camera _camera;
 	int* _pixelBuffer;

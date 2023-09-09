@@ -16,7 +16,7 @@ using namespace std;
 Camera::Camera()
 {
 	set_angles(0., 0., 0.);
-	set_origin(0., 0., 0.,0.);
+	set_origin(0., 0., 0., 0.);
 	set_screen(0, 0, 0.);
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -155,11 +155,11 @@ bool Renderer::draw_triangle_1color(const Point3& A, const Point3& B, const Poin
 	if(bTwofaces==false)
 	{
 		Point3 norm = (Point3(ax - bx, ay - by, 0.)).cross_product(Point3(ax - cx, ay - cy, 0.));
-		if (norm.z() >= 0.)
+		if (norm.z() <= 0.)
 			return false;
 	}
 
-	//test if triangle is trivially out of screen
+	//exit if triangle is trivially out of screen
 	if ((ax <= 0.) && (bx <= 0.) && (cx <= 0.))
 		return false;
 	if ((ay <= 0.) && (by <= 0.) && (cy <= 0.))
@@ -196,6 +196,9 @@ bool Renderer::draw_triangle_1color(const Point3& A, const Point3& B, const Poin
 
 	//split in two trapeze, compute D= the horizontal intersection of B with AC
 	double t = (by - ay) / (cy - ay);
+	assert(t >= 0.);
+	assert(t <= 1.);
+
 	double dx = cx * t + (1. - t)*ax;
 	double dy = cy * t + (1. - t)*ay;
 	double dw = cw * t + (1. - t)*aw;
@@ -214,13 +217,13 @@ bool Renderer::draw_triangle_1color(const Point3& A, const Point3& B, const Poin
 	assert(by <= cy);
 
 	//draw each trapez
-	bool b1=draw_trapeze(ax, aw, ax, aw, ay, bx, bw, dx, dw, by, color);
-	bool b2=draw_trapeze(bx, bw, dx, dw, by, cx, cw, cx, cw, cy, color);
+	bool b1 =draw_trapeze(ax, aw, ax, aw, (int)ay, bx, bw, dx, dw, (int)by, color);
+	bool b2 =draw_trapeze(bx, bw, dx, dw, (int)by, cx, cw, cx, cw, (int)cy, color);
 	
 	return b1 || b2;
 }
 ////////////////////////////////////////////////////////////////////////////////
-bool Renderer::draw_trapeze(double ax, double aw, double bx, double bw, double ay, double cx, double cw, double dx, double dw, double cy, int color)
+bool Renderer::draw_trapeze(double ax, double aw, double bx, double bw, int ay, double cx, double cw, double dx, double dw, int cy, int color)
 {
 	assert(ax <= bx);
 	assert(cx <= dx);
@@ -235,8 +238,11 @@ bool Renderer::draw_trapeze(double ax, double aw, double bx, double bw, double a
 	//reduce facet y
 	if (ay < 0)
 	{
-		double t = (ay - 0.) / (cy - ay);
-		ay = 0.;
+		double t = (double)(0. -ay) / (cy - ay);
+		assert(t >= 0.);
+		assert(t <= 1.);
+
+		ay = 0;
 		ax = cx * t + (1. - t)*ax;
 		aw = cw * t + (1. - t)*aw;
 		bx = cx * t + (1. - t)*bx;
@@ -244,7 +250,10 @@ bool Renderer::draw_trapeze(double ax, double aw, double bx, double bw, double a
 	}
 	if (cy > _Ymax )
 	{
-		double t = (cy - _Ymax) / (cy - ay);
+		double t = (double)(cy - _Ymax) / (cy - ay);
+		assert(t >= 0.);
+		assert(t <= 1.);
+
 		cy = _Ymax;
 		cx = cx * t + (1. - t)*ax;
 		cw = cw * t + (1. - t)*aw;
@@ -253,47 +262,73 @@ bool Renderer::draw_trapeze(double ax, double aw, double bx, double bw, double a
 	}
 
 	//plot trapeze
-	for (int y = (int)ay; y < (int)cy; y++)
+	assert(ay <= cy);
+	for (int y = ay; y < cy; y++)
 	{
 		//plot line
-		double t = (y - ay) / (cy - ay);
-		draw_horizontal_line(cx*t + ax * (1. - t), cw*t + aw * (1. - t), dx*t + bx * (1. - t), bw*t + dw * (1. - t), y,color);
+		double t = (double)(y - ay) / (cy - ay);
+		assert(t >= 0.);
+		assert(t <= 1.);
+
+		int p1x = (int)(cx * t + ax * (1. - t));
+		double p1w = (cw * t + aw * (1. - t));
+		int p2x = (int)(dx * t + bx * (1. - t));
+		double p2w = (dw * t + bw * (1. - t));
+
+		assert(p1x <= p2x);
+		draw_horizontal_line(p1x, p1w, p2x, p2w, y, color);
 	}
 	return true;
 }
 ////////////////////////////////////////////////////////////////////////////////
-void Renderer::draw_horizontal_line(double ax, double aw, double bx, double bw, double y, int color)
+void Renderer::draw_horizontal_line(int ax, double aw, int bx, double bw, int y, int color)
 {
+	assert(ax <= bx);
+
 	if (bx < 0)
 		return;
 	if (ax > _Xmax)
 		return;
 
+	if (y < 0)
+		return;
+	if (y > _Xmax)
+		return;
+
 	// cut the line if out of screen
 	if (ax < 0)
 	{
-		double t = (bx-0.) / (bx - ax);
-		ax = bx * t + (1. - t)*ax;
+		double t = (double)(bx-0) / (bx - ax);
+		assert(t >= 0.);
+		assert(t <= 1.);
+
+		ax = 0; // bx* t + (1. - t) * ax;
 		aw = bw * t + (1. - t)*aw;
 	}
 	if (bx > _Xmax)
 	{
-		double t = (bx - _Xmax) / (bx - ax);
-		bx = ax * t + (1. - t)*bx;
+		double t = (float)(bx - _Xmax) / (bx - ax);
+		assert(t >= 0.);
+		assert(t <= 1.);
+
+		bx = _Xmax; // ax* t + (1. - t) * bx;
 		bw = aw * t + (1. - t)*bw;
 	}
 
-	int *pLine = _pixelBuffer + (int)y * _Xmax;
-	float *pWBuffer = _wbuffer + (int)y * _Xmax;
+	int *pLine = _pixelBuffer + y * _Xmax;
+	float *pWBuffer = _wbuffer + y * _Xmax;
 
-	for (int i = (int)ax; i<(int)bx; i++)
+	for (int i = ax; i<bx; i++)
 	{
-		double t = (i-ax) / (bx - ax);
-		double w = bw * t + aw*(1. - t);
+		float t = (float)(i-ax) / (bx - ax);
+		assert(t >= 0.f);
+		assert(t <= 1.f);
+
+		float w = bw * t + aw*(1.f - t);
 
 		if (pWBuffer[i] < w)
 		{
-			pWBuffer[i] = (float)w;
+			pWBuffer[i] = w;
 			pLine[i] = color;
 		}
 	}
@@ -320,6 +355,7 @@ void Renderer::draw_line(const Point3& p1, const Point3& p2, int color)
 	double fx, fy, dx, dy;
 	int i, im,decal;
 	double zp1, zp2, fz, dz;
+	double wEpsilon = 1.e-2; // todo exact formula
 
 	_camera.project(p1, x1, y1, zp1);
 	_camera.project(p2, x2, y2, zp2);
@@ -347,7 +383,7 @@ void Renderer::draw_line(const Point3& p1, const Point3& p2, int color)
 		{
 			decal = int(fx) + int(fy) * _Xmax;
 
-			if (_wbuffer[decal] < fz)
+			if (_wbuffer[decal] < fz+wEpsilon)
 			{
 				_wbuffer[decal] = (float)fz;
 				_pixelBuffer[decal] = color;
