@@ -4,6 +4,7 @@
 //very old code
 
 #include "Geometry.h"
+class Mesh;
 
 class Camera
 {
@@ -37,12 +38,13 @@ public:
 	void clear();
 	void set_camera(double ox, double oy, double oz, double ahead, double yaw, double pitch, double roll, double zoom);
 
-	void draw_triangle_1color(const Point3& A, const Point3& B, const Point3& C, int color);
+	void draw_mesh(const Mesh& m, int color, bool bDrawEdges=false);
+	bool draw_triangle_1color(const Point3& A, const Point3& B, const Point3& C, int color, bool bTwofaces=false); //return true if face was visible
 	void draw_line(const Point3& p1, const Point3& p2, int color);
 	void draw_pixel(const Point3& pPixels, int color);
 
 private:
-	void draw_trapeze(double ax, double aw, double bx, double bw, double ay, double cx, double cw, double dx, double dw, double cy, int color);
+	bool draw_trapeze(double ax, double aw, double bx, double bw, double ay, double cx, double cw, double dx, double dw, double cy, int color); //return true if face was visible
 	void draw_horizontal_line(double ax, double aw, double bx, double bw, double y, int color);
 
 	Camera _camera;

@@ -3,6 +3,7 @@
 using namespace std;
 
 #include "Renderer.h"
+#include "Mesh.h"
 
 //very old code!!
 
@@ -123,7 +124,27 @@ Renderer::~Renderer()
 	delete[] _wbuffer;
 }
 ////////////////////////////////////////////////////////////////////////////////
-void Renderer::draw_triangle_1color(const Point3& A, const Point3& B, const Point3& C, int color)
+void Renderer::draw_mesh(const Mesh& m,int color, bool bDrawEdges)
+{
+	for (int i = 0; i < m.nb_triangles(); i++)
+	{
+		if (m.is_triangle_unlinked(i))
+			continue;
+
+		Triangle3 t;
+		m.get_triangle(i, t);
+		bool bDrawed=draw_triangle_1color(t.p1(), t.p2(), t.p3(), color);
+		
+		if (bDrawEdges && bDrawed) //todo custom color, clean zbuffer , etc
+		{
+			draw_line(t.p1(), t.p2(), (0)); //RGB(0,0,0)
+			draw_line(t.p1(), t.p3(), (0)); //RGB(0,0,0)
+			draw_line(t.p2(), t.p3(), (0)); //RGB(0,0,0)
+		}
+	}
+}
+////////////////////////////////////////////////////////////////////////////////
+bool Renderer::draw_triangle_1color(const Point3& A, const Point3& B, const Point3& C, int color,bool bTwofaces)
 {
 	double ax,ay,aw, bx,by,bw, cx,cy,cw;
 	_camera.project(A, ax, ay, aw);
@@ -131,22 +152,25 @@ void Renderer::draw_triangle_1color(const Point3& A, const Point3& B, const Poin
 	_camera.project(C, cx, cy, cw);
 
 	// test if seeing the back of the facet
-	Point3 norm = (Point3(ax - bx, ay - by, 0.)).cross_product(Point3(ax - cx, ay - cy, 0.));
-//	if (norm.z() >= 0.)
-//		return;
+	if(bTwofaces==false)
+	{
+		Point3 norm = (Point3(ax - bx, ay - by, 0.)).cross_product(Point3(ax - cx, ay - cy, 0.));
+		if (norm.z() >= 0.)
+			return false;
+	}
 
 	//test if triangle is trivially out of screen
 	if ((ax <= 0.) && (bx <= 0.) && (cx <= 0.))
-		return;
+		return false;
 	if ((ay <= 0.) && (by <= 0.) && (cy <= 0.))
-		return;
+		return false;
 	if ((ax >= _Xmax) && (bx >= _Xmax) && (cx >= _Xmax))
-		return;
+		return false;
 	if ((ay >= _Xmax) && (by >= _Xmax) && (cy >= _Xmax))
-		return;
+		return false;
 
 	//order points in y axis
-	if ((by < ay) && (by < cy))
+	if ((by <= ay) && (by <= cy))
 	{
 		//exchange B and A
 		double tmpx = ax; ax = bx; bx = tmpx;
@@ -154,7 +178,7 @@ void Renderer::draw_triangle_1color(const Point3& A, const Point3& B, const Poin
 		double tmpw = aw; aw = bw; bw = tmpw;
 	}
 	else
-		if ((cy < ay) && (cy < by))
+		if ((cy <= ay) && (cy <= by))
 		{
 			//exchange C and A
 			double tmpx = ax; ax = cx; cx = tmpx;
@@ -185,18 +209,28 @@ void Renderer::draw_triangle_1color(const Point3& A, const Point3& B, const Poin
 		double tmpw = bw; bw = dw; dw = tmpw;
 	}
 
+	assert(bx <= dx);
+	assert(ay <= by);
+	assert(by <= cy);
+
 	//draw each trapez
-	draw_trapeze(ax, aw, ax, aw, ay, bx, bw, dx, dw, by, color);
-	draw_trapeze(bx, bw, dx, dw, by, cx, cw, cx, cw, cy, color);
+	bool b1=draw_trapeze(ax, aw, ax, aw, ay, bx, bw, dx, dw, by, color);
+	bool b2=draw_trapeze(bx, bw, dx, dw, by, cx, cw, cx, cw, cy, color);
+	
+	return b1 || b2;
 }
 ////////////////////////////////////////////////////////////////////////////////
-void Renderer::draw_trapeze(double ax, double aw, double bx, double bw, double ay, double cx, double cw, double dx, double dw, double cy, int color)
+bool Renderer::draw_trapeze(double ax, double aw, double bx, double bw, double ay, double cx, double cw, double dx, double dw, double cy, int color)
 {
+	assert(ax <= bx);
+	assert(cx <= dx);
+	assert(ay <= cy);
+
 	if (cy < 0.)
-		return;
+		return false;
 
 	if (ay > _Ymax)
-		return;
+		return false;
 
 	//reduce facet y
 	if (ay < 0)
@@ -218,10 +252,6 @@ void Renderer::draw_trapeze(double ax, double aw, double bx, double bw, double a
 		dw = dw * t + (1. - t)*bw;
 	}
 
-	assert(ax <= bx);
-	assert(cx <= dx);
-	assert(ay <= cy);
-
 	//plot trapeze
 	for (int y = (int)ay; y < (int)cy; y++)
 	{
@@ -229,6 +259,7 @@ void Renderer::draw_trapeze(double ax, double aw, double bx, double bw, double a
 		double t = (y - ay) / (cy - ay);
 		draw_horizontal_line(cx*t + ax * (1. - t), cw*t + aw * (1. - t), dx*t + bx * (1. - t), bw*t + dw * (1. - t), y,color);
 	}
+	return true;
 }
 ////////////////////////////////////////////////////////////////////////////////
 void Renderer::draw_horizontal_line(double ax, double aw, double bx, double bw, double y, int color)
