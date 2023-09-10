@@ -161,7 +161,7 @@ bool Renderer::draw_triangle_1color(const Point3& A, const Point3& B, const Poin
 		return false;
 	if ((ax >= _Xmax) && (bx >= _Xmax) && (cx >= _Xmax))
 		return false;
-	if ((ay >= _Xmax) && (by >= _Xmax) && (cy >= _Xmax))
+	if ((ay >= _Ymax) && (by >= _Ymax) && (cy >= _Ymax))
 		return false;
 
 	//order points in y axis
