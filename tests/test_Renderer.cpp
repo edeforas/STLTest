@@ -44,8 +44,8 @@ int main()
 	int iHeight = 1024;
 	double dAngleX = 20., dAngleY = 10., dAhead = 25., dZoom = 500.;
 	
-	//BodyFactory::Torus torus(15, 5);
-	//torus.set_precision(32);
+	BodyFactory::Torus torus(15, 5);
+	torus.set_precision(32);
 
 	BodyFactory::SphereUV sphere(12);
 	sphere.set_precision(32);
@@ -56,7 +56,7 @@ int main()
 	{
 		eng.set_camera(0., 0., 0., dAhead, i, 10.-i/2., i/3., dZoom);
 		draw(eng, img);
-		eng.draw_mesh(sphere.mesh(), PIXELRGB(0, 255, 0),true);
+		eng.draw_mesh(torus.mesh(), PIXELRGB(0, 255, 0),true);
 		ImageIoBmp::write(string("cube_")+to_string(i)+".bmp", &img);
 	}
 

@@ -14,7 +14,7 @@ public:
 	void set_origin(double x, double y, double z, double ahead);
 	void set_screen(int width, int height, double zoom);
 	Point3 local_ref(const Point3& pc) const;
-	bool project(const Point3& pPixels, double& screenx, double& screeny, double& w); //w =1/z
+	void project(const Point3& pPixels, int& screenx, int& screeny, double& w); //w =1/z
 	
 private:
 	//rotation angles

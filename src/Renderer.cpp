@@ -82,22 +82,16 @@ Point3 Camera::local_ref(const Point3& pc) const
 	return pLocal;
 }
 ////////////////////////////////////////////////////////////////////////////////
-bool Camera::project(const Point3& pPixels, double& screenx, double& screeny, double& w)
+void Camera::project(const Point3& pPixels, int& screenx, int& screeny, double& w)
 {
 	Point3 pc = local_ref(pPixels);
 
-	screenx = pc.x() * _zoomFactor / pc.z() + _screenCenterX;
-	screeny = pc.y() * _zoomFactor / pc.z() + _screenCenterY;
-
-	if ((screenx < 0) || (screenx >= _screenCenterX * 2) || (screeny < 0) || (screeny >= _screenCenterY * 2))
-		return false;
-
+	screenx = (int)(pc.x() * _zoomFactor / pc.z() + _screenCenterX+0.5);
+	screeny = (int)(pc.y() * _zoomFactor / pc.z() + _screenCenterY+0.5);
 	if (pc.z() != 0.)
 		w = 1. / pc.z();
 	else
 		w = 0.;
-
-	return true;
 }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -146,7 +140,8 @@ void Renderer::draw_mesh(const Mesh& m,int color, bool bDrawEdges)
 ////////////////////////////////////////////////////////////////////////////////
 bool Renderer::draw_triangle_1color(const Point3& A, const Point3& B, const Point3& C, int color,bool bTwofaces)
 {
-	double ax,ay,aw, bx,by,bw, cx,cy,cw;
+	int ax,ay, bx,by, cx,cy;
+	double aw, bw, cw;
 	_camera.project(A, ax, ay, aw);
 	_camera.project(B, bx, by, bw);
 	_camera.project(C, cx, cy, cw);
@@ -173,42 +168,42 @@ bool Renderer::draw_triangle_1color(const Point3& A, const Point3& B, const Poin
 	if ((by <= ay) && (by <= cy))
 	{
 		//exchange B and A
-		double tmpx = ax; ax = bx; bx = tmpx;
-		double tmpy = ay; ay = by; by = tmpy;
+		int tmpx = ax; ax = bx; bx = tmpx;
+		int tmpy = ay; ay = by; by = tmpy;
 		double tmpw = aw; aw = bw; bw = tmpw;
 	}
 	else
 		if ((cy <= ay) && (cy <= by))
 		{
 			//exchange C and A
-			double tmpx = ax; ax = cx; cx = tmpx;
-			double tmpy = ay; ay = cy; cy = tmpy;
+			int tmpx = ax; ax = cx; cx = tmpx;
+			int tmpy = ay; ay = cy; cy = tmpy;
 			double tmpw = aw; aw = cw; cw = tmpw;
 		}
 
 	if (cy < by)
 	{
 		//exchange C and B
-		double tmpx = bx; bx = cx; cx = tmpx;
-		double tmpy = by; by = cy; cy = tmpy;
+		int tmpx = bx; bx = cx; cx = tmpx;
+		int tmpy = by; by = cy; cy = tmpy;
 		double tmpw = bw; bw = cw; cw = tmpw;
 	}
 
 	//split in two trapeze, compute D= the horizontal intersection of B with AC
-	double t = (by - ay) / (cy - ay);
+	double t = (double)(by - ay) / (cy - ay);
 	assert(t >= 0.);
 	assert(t <= 1.);
 
-	double dx = cx * t + (1. - t)*ax;
-	double dy = cy * t + (1. - t)*ay;
+	int dx = (int)(cx * t + (1. - t)*ax+0.5);
+	int dy = (int)(cy * t + (1. - t)*ay+0.5);
 	double dw = cw * t + (1. - t)*aw;
 
 	//reorder in x such that bx<dx
 	if ((dx < bx))
 	{
 		//exchange D and B
-		double tmpx = bx; bx = dx; dx = tmpx;
-		double tmpy = by; by = dy; dy = tmpy;
+		int tmpx = bx; bx = dx; dx = tmpx;
+		int tmpy = by; by = dy; dy = tmpy;
 		double tmpw = bw; bw = dw; dw = tmpw;
 	}
 
@@ -217,8 +212,8 @@ bool Renderer::draw_triangle_1color(const Point3& A, const Point3& B, const Poin
 	assert(by <= cy);
 
 	//draw each trapez
-	bool b1 =draw_trapeze(ax, aw, ax, aw, (int)ay, bx, bw, dx, dw, (int)by, color);
-	bool b2 =draw_trapeze(bx, bw, dx, dw, (int)by, cx, cw, cx, cw, (int)cy, color);
+	bool b1 =draw_trapeze(ax, aw, ax, aw, ay, bx, bw, dx, dw, by, color);
+	bool b2 =draw_trapeze(bx, bw, dx, dw, by, cx, cw, cx, cw, cy, color);
 	
 	return b1 || b2;
 }
@@ -324,7 +319,7 @@ void Renderer::draw_horizontal_line(int ax, double aw, int bx, double bw, int y,
 		assert(t >= 0.f);
 		assert(t <= 1.f);
 
-		float w = bw * t + aw*(1.f - t);
+		float w = (float)(bw * t + aw*(1.f - t));  //todo optimize
 
 		if (pWBuffer[i] < w)
 		{
@@ -351,7 +346,7 @@ void Renderer::clear()
 void Renderer::draw_line(const Point3& p1, const Point3& p2, int color)
 {
 	//todo optimize
-	double x1, y1, x2, y2;
+	int x1, y1, x2, y2;
 	double fx, fy, dx, dy;
 	int i, im,decal;
 	double zp1, zp2, fz, dz;
@@ -397,11 +392,13 @@ void Renderer::draw_line(const Point3& p1, const Point3& p2, int color)
 ////////////////////////////////////////////////////////////////////////////////
 void Renderer::draw_pixel(const Point3& pPixels, int col)
 {
-	double ix, iy;
+	int ix, iy;
 	double zpx;
 	float* zp;
 
-	if (!_camera.project(pPixels, ix, iy, zpx))
+	_camera.project(pPixels, ix, iy, zpx);
+
+	if ((ix < 0) || (ix >= _Xmax) || (iy < 0) || (iy >= _Ymax))
 		return;
 
 	//teste if visible in wbuffer
