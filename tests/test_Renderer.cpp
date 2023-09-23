@@ -6,9 +6,9 @@
 /////////////////////////////////////////////////////////////////////////////
 int main()
 {
-	int iWidth = 1024;
-	int iHeight = 1024;
-	double dAngleX = 20., dAngleY = 10., dAhead = 50., dZoom = 1000.;
+	int iWidth = 1600;
+	int iHeight = 1200;
+	double dAngleX = 20., dAngleY = 10., dAhead = 50., dZoom = 2000.;
 	
 	BodyFactory::Torus torus(15, 3);
 	torus.set_color(PIXELRGB(128, 128, 128));

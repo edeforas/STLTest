@@ -235,9 +235,9 @@ bool Renderer::draw_trapeze(double ax, double aw, double bx, double bw, int ay, 
 		assert(t >= 0.);
 		assert(t <= 1.);
 
-		int p1x = (int)(cx * t + ax * (1. - t));
+		int p1x = (int)(cx * t + ax * (1. - t)+0.5);
 		double p1w = (cw * t + aw * (1. - t));
-		int p2x = (int)(dx * t + bx * (1. - t));
+		int p2x = (int)(dx * t + bx * (1. - t)+0.5);
 		double p2w = (dw * t + bw * (1. - t));
 
 		assert(p1x <= p2x);
