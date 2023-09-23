@@ -20,6 +20,8 @@ set(STLTEST_FILES
 	OBJFile.cpp OBJFile.h
 	
 	Renderer.cpp Renderer.h
+	RendererCamera.cpp RendererCamera.h
+	RendererLight.cpp RendererLight.h
 	Image.h
 	ImageGenerator.cpp ImageGenerator.h
 	ImageIoBmp.cpp ImageIoBmp.h

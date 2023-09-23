@@ -90,7 +90,8 @@ public:
 	bool intersect_with(const Triangle3& t) const;
 
 	double surface() const;
-	Point3 normal() const; //not normalized, add .normalized() (from Point3 class) to normalize it
+	Point3 normal() const; // normal vector (normalized)
+	Point3 orthogonal() const; // compute orthogonal vector (normal to triangle but not normalized())
 
 private:
 	Point3 _p1, _p2, _p3;
@@ -115,13 +116,12 @@ public:
 
 	void project_point(const Point3& p, Point3& projected) const;
 
-	Point3 normal() const; // normalized
+	Point3 normal() const; // normal vector (normalized)
 
 private:
 		double _a, _b, _c, _d;
 };
 ///////////////////////////////////////////////////////////////////////////
-
 class BoundingBox3 // AABB: Axis Aligned Bounding Box
 {
 public:

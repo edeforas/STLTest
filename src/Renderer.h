@@ -1,33 +1,13 @@
 #ifndef _Renderer_
 #define _Renderer_
 
-//very old code
-
+#include "RendererCamera.h"
+#include "RendererLight.h"
 #include "Geometry.h"
 class Mesh;
 
-class Camera
-{
-public:
-	Camera();
-	void set_angles(double yaw, double pitch, double roll);
-	void set_origin(double x, double y, double z, double ahead);
-	void set_screen(int width, int height, double zoom);
-	Point3 local_ref(const Point3& pc) const;
-	void project(const Point3& pPixels, int& screenx, int& screeny, double& w); //w =1/z
-	
-private:
-	//rotation angles
-	double _yawCos, _yawSin, _pitchCos, _pitchSin, _rollCos, _rollSin;
-	double _yaw, _pitch, _roll; 
-
-	//camera position
-	double _x, _y, _z, _ahead; 
-
-	// screen properties
-	double _zoomFactor;
-	int _screenCenterX, _screenCenterY;
-};
+#include <vector>
+using namespace std;
 
 class Renderer
 {
@@ -37,6 +17,7 @@ public:
 
 	void clear();
 	void set_camera(double ox, double oy, double oz, double ahead, double yaw, double pitch, double roll, double zoom);
+	void add_ambient_light(int iAmbiantColor =0x808080, double dAmbiantFactor = 1.);
 
 	void draw_mesh(const Mesh& m, int color, bool bDrawEdges=false);
 	bool draw_triangle_1color(const Point3& A, const Point3& B, const Point3& C, int color, bool bTwofaces=false); //return true if face was visible
@@ -47,7 +28,11 @@ private:
 	bool draw_trapeze(double ax, double aw, double bx, double bw, int ay, double cx, double cw, double dx, double dw, int cy, int color); //return true if face was visible
 	void draw_horizontal_line(int ax, double aw, int bx, double bw, int y, int color);
 
-	Camera _camera;
+	int compute_color_with_lights(int iColor);
+
+	RendererCamera _camera;
+	vector<RendererLight*> _lights;
+
 	int* _pixelBuffer;
 	float* _wbuffer;
 	int _Xmax, _Ymax;

@@ -52,6 +52,8 @@ int main()
 
 	Image img(iWidth, iHeight, 4);
 	Renderer eng((int*)img.data(),iWidth, iHeight);
+	eng.add_ambient_light(0xC0C0C0, 1.);
+
 	for (int i = 0; i < 180; i += 10)
 	{
 		eng.set_camera(0., 0., 0., dAhead, i, 10.-i/2., i/3., dZoom);

@@ -334,10 +334,15 @@ bool Triangle3::intersect_with(const Triangle3& t) const
 
 double Triangle3::surface() const
 {
-	return normal().norm() * 0.5;
+	return orthogonal().norm() * 0.5;
 }
 
 Point3 Triangle3::normal() const
+{
+	return orthogonal().normalized();
+}
+
+Point3 Triangle3::orthogonal() const
 {
 	return (_p1 - _p2).cross_product(_p1 - _p3);
 }

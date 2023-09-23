@@ -90,7 +90,7 @@ double MeshMeasurements::volume(const Mesh& m)
 
 		Triangle3 t;
 		m.get_triangle(i, t);
-		volume += t.p1().dot_product(t.normal());
+		volume += t.p1().dot_product(t.orthogonal());
 	}
 
 	return volume / 6.;
