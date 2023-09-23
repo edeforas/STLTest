@@ -14,10 +14,30 @@ RendererLightAmbiant::RendererLightAmbiant(int iAmbiantColor, double dAmbiantFac
 	_dAmbiantBlue = dAmbiantFactor*((iAmbiantColor ) & 0xff) / 256.;
 }
 
-void RendererLightAmbiant::apply(double& dRed,double& dGreen, double& dBlue)
+void RendererLightAmbiant::apply(double& dRed,double& dGreen, double& dBlue, const Point3& normal)
 {
 	dRed*=_dAmbiantRed;
 	dGreen*=_dAmbiantGreen;
 	dBlue*=_dAmbiantBlue;
+}
+////////////////////////////////////////////////////////////////////////////////
+RendererLightDiffuse::RendererLightDiffuse(int iDiffuseColor, double dDiffuseFactor, const Point3& direction)
+{
+	_dDiffuseRed = dDiffuseFactor * ((iDiffuseColor >> 16) & 0xff) / 256.;
+	_dDiffuseGreen = dDiffuseFactor * ((iDiffuseColor >> 8) & 0xff) / 256.;
+	_dDiffuseBlue = dDiffuseFactor * ((iDiffuseColor) & 0xff) / 256.;
+
+	_direction = direction;
+}
+
+void RendererLightDiffuse::apply(double& dRed, double& dGreen, double& dBlue, const Point3& normal)
+{
+	double proj = normal.dot_product(_direction);
+	if (proj < 0.)
+		proj = 0.;
+
+	dRed *= _dDiffuseRed*proj;
+	dGreen *=_dDiffuseGreen*proj;
+	dBlue *= _dDiffuseBlue*proj;
 }
 ////////////////////////////////////////////////////////////////////////////////

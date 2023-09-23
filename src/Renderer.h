@@ -18,6 +18,7 @@ public:
 	void clear();
 	void set_camera(double ox, double oy, double oz, double ahead, double yaw, double pitch, double roll, double zoom);
 	void add_ambient_light(int iAmbiantColor =0x808080, double dAmbiantFactor = 1.);
+	void add_diffuse_light(int iDiffuseColor, double dDiffuseFactor, const Point3& direction);
 
 	void draw_mesh(const Mesh& m, int color, bool bDrawEdges=false);
 	bool draw_triangle_1color(const Point3& A, const Point3& B, const Point3& C, int color, bool bTwofaces=false); //return true if face was visible
@@ -28,7 +29,7 @@ private:
 	bool draw_trapeze(double ax, double aw, double bx, double bw, int ay, double cx, double cw, double dx, double dw, int cy, int color); //return true if face was visible
 	void draw_horizontal_line(int ax, double aw, int bx, double bw, int y, int color);
 
-	int compute_color_with_lights(int iColor);
+	int compute_color_with_lights(int iColor, const Point3& normal);
 
 	RendererCamera _camera;
 	vector<RendererLight*> _lights;

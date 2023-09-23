@@ -44,24 +44,36 @@ void Renderer::add_ambient_light(int iAmbiantColor, double dAmbiantFactor)
 	_lights.push_back(new RendererLightAmbiant(iAmbiantColor,dAmbiantFactor));
 }
 ////////////////////////////////////////////////////////////////////////////////
-int Renderer::compute_color_with_lights(int iColor)
+void Renderer::add_diffuse_light(int iDiffuseColor,double dDiffuseFactor, const Point3& direction)
+{
+	_lights.push_back(new RendererLightDiffuse(iDiffuseColor,dDiffuseFactor, direction));
+}
+////////////////////////////////////////////////////////////////////////////////
+int Renderer::compute_color_with_lights(int iColor, const Point3& normal)
 {
 	double dRed = ((iColor >> 16) & 0xff)/256.;
 	double dGreen = ((iColor >> 8) & 0xff)/256.;
 	double dBlue = ((iColor ) & 0xff)/256.;
 	
-	for(size_t i=0;i<_lights.size();i++)
-		_lights[i]->apply(dRed,dGreen,dBlue);
+	double dRTotal = 0., dGTotal = 0., dBTotal = 0.;
+	for (size_t i = 0; i < _lights.size(); i++)
+	{
+		double dR = dRed, dG = dGreen, dB = dBlue;
+		_lights[i]->apply(dR, dG, dB, normal);
+		dRTotal += dR;
+		dGTotal += dG;
+		dBTotal += dB;
+	}
 
-	int iRed = (int)(dRed * 256.+0.5); 
+	int iRed = (int)(dRTotal * 256.+0.5);
 	if (iRed > 255)
 		iRed = 255;
 
-	int iGreen = (int)(dGreen * 256.+0.5);
+	int iGreen = (int)(dGTotal * 256.+0.5);
 	if (iGreen > 255)
 		iGreen = 255;
 
-	int iBlue = (int)(dBlue * 256.+0.5);
+	int iBlue = (int)(dBTotal * 256.+0.5);
 	if (iBlue > 255)
 		iBlue = 255;
 
@@ -99,8 +111,8 @@ bool Renderer::draw_triangle_1color(const Point3& A, const Point3& B, const Poin
 	// test if seeing the back of the facet
 	if(bTwofaces==false)
 	{
-		Point3 norm = (Point3(ax - bx, ay - by, 0.)).cross_product(Point3(ax - cx, ay - cy, 0.));
-		if (norm.z() <= 0.)
+		Point3 norm2d = (Point3(ax - bx, ay - by, 0.)).cross_product(Point3(ax - cx, ay - cy, 0.));
+		if (norm2d.z() <= 0.)
 			return false;
 	}
 
@@ -140,7 +152,12 @@ bool Renderer::draw_triangle_1color(const Point3& A, const Point3& B, const Poin
 	}
 
 	//split in two trapeze, compute D= the horizontal intersection of B with AC
-	double t = (double)(by - ay) / (cy - ay);
+	double t;
+	if (cy != ay)
+		t = (double)(by - ay) / (cy - ay);
+	else
+		t = 0.;
+
 	assert(t >= 0.);
 	assert(t <= 1.);
 
@@ -162,7 +179,8 @@ bool Renderer::draw_triangle_1color(const Point3& A, const Point3& B, const Poin
 	assert(by <= cy);
 
 	//draw each trapez
-	int iColorWithLights = compute_color_with_lights(iColor);
+	Point3 normal = Triangle3(A, B, C).normal();
+	int iColorWithLights = compute_color_with_lights(iColor,normal);
 	bool b1 =draw_trapeze(ax, aw, ax, aw, ay, bx, bw, dx, dw, by, iColorWithLights);
 	bool b2 =draw_trapeze(bx, bw, dx, dw, by, cx, cw, cx, cw, cy, iColorWithLights);
 	

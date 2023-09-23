@@ -127,4 +127,3 @@ bool MeshMeasurements::has_no_short_edges(const Mesh& m)
 {
 	return true; //todo
 }
-

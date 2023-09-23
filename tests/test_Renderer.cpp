@@ -52,13 +52,16 @@ int main()
 
 	Image img(iWidth, iHeight, 4);
 	Renderer eng((int*)img.data(),iWidth, iHeight);
-	eng.add_ambient_light(0xC0C0C0, 1.);
+	eng.add_ambient_light(0x808080, 1.);
+	eng.add_diffuse_light(0xFF0000, 1., Point3(1., 0., 1.));
+	eng.add_diffuse_light(0x00FF00, 1., Point3(0., 1., 0.));
+	eng.add_diffuse_light(0x0000FF, 1., Point3(0., 1., 1.));
 
-	for (int i = 0; i < 180; i += 10)
+	for (int i = 0; i < 360; i += 10)
 	{
-		eng.set_camera(0., 0., 0., dAhead, i, 10.-i/2., i/3., dZoom);
+		eng.set_camera(0., 0., 0., dAhead, 5+i, 10.-i/2., i/3., dZoom);
 		draw(eng, img);
-		eng.draw_mesh(torus.mesh(), PIXELRGB(0, 255, 0),true);
+		eng.draw_mesh(torus.mesh(), PIXELRGB(255, 255, 255),true);
 		ImageIoBmp::write(string("cube_")+to_string(i)+".bmp", &img);
 	}
 
