@@ -1,44 +1,8 @@
-#include <cstdlib>
-#include <cmath>
-
 #include "Renderer.h"
 #include "Image.h"
 #include "ImageIoBmp.h"
 #include "BodyFactory.h"
 
-////////////////////////////////////////////////////////////////////////////////
-void draw(Renderer& eng,Image& img)
-{
-	eng.clear();
-	/*
-	Point3 a;
-	srand(0);
-	for (int point = 0; point < 2000; point++)
-	{
-		a.x() = (rand() % 1000) / 200.;
-		a.y() = (rand() % 1000) / 200.;
-		a.z() = (rand() % 1000) / 200.;
-
-		int color = point * 30000;
-
-		eng.draw_pixel(a, color);
-	}
-	
-	eng.draw_triangle_1color(Point3(10, 10, 10), Point3(10, 10, -10), Point3(10, -10, 10), PIXELRGB(255, 0, 0),true);
-	*/
-	/*
-	//draw cube edges
-	eng.draw_line(Point3(10, 10, -10), Point3(10, 10, 10), PIXELRGB(255, 255, 255));
-	eng.draw_line(Point3(10, -10, -10), Point3(10, -10, 10), PIXELRGB(255, 255, 255));
-	eng.draw_line(Point3(-10, 10, -10), Point3(-10, 10, 10), PIXELRGB(255, 255, 255));
-	eng.draw_line(Point3(-10, -10, -10), Point3(-10, -10, 10), PIXELRGB(255, 255, 255));
-
-	eng.draw_line(Point3(10, -10, 10), Point3(10, 10, 10), PIXELRGB(255, 255, 255));
-	eng.draw_line(Point3(-10, -10, 10), Point3(-10, 10, 10), PIXELRGB(255, 255, 255));
-	eng.draw_line(Point3(10, -10, -10), Point3(10, 10, -10), PIXELRGB(255, 255, 255));
-	eng.draw_line(Point3(-10, -10, -10), Point3(-10, 10, -10), PIXELRGB(255, 255, 255));
-*/
-}
 /////////////////////////////////////////////////////////////////////////////
 int main()
 {
@@ -47,9 +11,11 @@ int main()
 	double dAngleX = 20., dAngleY = 10., dAhead = 50., dZoom = 1000.;
 	
 	BodyFactory::Torus torus(15, 3);
+	torus.set_color(PIXELRGB(128, 128, 128));
 	torus.set_precision(32);
 
 	BodyFactory::SphereUV sphere(10);
+	sphere.set_color(PIXELRGB(64, 64, 255));
 	sphere.set_precision(32);
 
 	Image img(iWidth, iHeight, 4);
@@ -62,9 +28,9 @@ int main()
 	for (int i = 0; i < 360; i += 10)
 	{
 		eng.set_camera(0., 0., 0., dAhead, +i, i/2., i/3., dZoom);
-		draw(eng, img);
-		eng.draw_mesh(torus.mesh(), PIXELRGB(255, 255, 64),true);
-		eng.draw_mesh(sphere.mesh(), PIXELRGB(64, 64, 255), true);
+		eng.clear(); 
+		eng.draw_mesh(torus.mesh());
+		eng.draw_mesh(sphere.mesh());
 		ImageIoBmp::write(string("cube_")+to_string(i)+".bmp", &img);
 	}
 

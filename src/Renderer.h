@@ -20,7 +20,7 @@ public:
 	void add_ambient_light(int iAmbiantColor =0x808080, double dAmbiantFactor = 1.);
 	void add_diffuse_light(int iDiffuseColor, double dDiffuseFactor, const Point3& direction);
 
-	void draw_mesh(const Mesh& m, int color, bool bDrawEdges=false);
+	void draw_mesh(const Mesh& m, bool bDrawEdges=false); //use mesh color
 	bool draw_triangle_1color(const Point3& A, const Point3& B, const Point3& C, int color, bool bTwofaces=false); //return true if face was visible
 	void draw_line(const Point3& p1, const Point3& p2, int color);
 	void draw_pixel(const Point3& pPixels, int color);
