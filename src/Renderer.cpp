@@ -80,9 +80,13 @@ int Renderer::compute_color_with_lights(int iColor, const Point3& normal)
 	return (iRed << 16) + (iGreen << 8) + iBlue;
 }
 ////////////////////////////////////////////////////////////////////////////////
-void Renderer::draw_mesh(const Mesh& m, bool bDrawEdges)
+void Renderer::draw_mesh(const Mesh& m, bool bDrawEdges, int iColor)
 {
-	int color = m.get_color();
+	// us default mesh color if iColor is -1
+	int color = iColor;
+	if (iColor==-1)
+		color=m.get_color();
+
 	for (int i = 0; i < m.nb_triangles(); i++)
 	{
 		if (m.is_triangle_unlinked(i))
@@ -285,7 +289,12 @@ void Renderer::draw_horizontal_line(int ax, double aw, int bx, double bw, int y,
 
 	for (int i = ax; i<=bx; i++)
 	{
-		float t = (float)(i-ax) / (bx - ax);
+		float t;
+		if (ax == bx)
+			t = 1.;
+		else
+			t = (float)(i-ax) / (bx - ax);
+		
 		assert(t >= 0.f);
 		assert(t <= 1.f);
 
