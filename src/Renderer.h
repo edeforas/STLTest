@@ -16,6 +16,7 @@ public:
 	~Renderer();
 
 	void clear();
+	void set_background(int iBackgroundColor);
 	void set_camera(double ox, double oy, double oz, double ahead, double yaw, double pitch, double roll, double zoom);
 	void add_ambient_light(int iAmbiantColor =0x808080, double dAmbiantFactor = 1.);
 	void add_diffuse_light(int iDiffuseColor, double dDiffuseFactor, const Point3& direction);
@@ -37,6 +38,7 @@ private:
 	int* _pixelBuffer;
 	float* _wbuffer;
 	int _Xmax, _Ymax;
+	int _iBackgroundColor;
 };
 
 #endif

@@ -20,6 +20,7 @@ int main()
 
 	Image img(iWidth, iHeight, 4);
 	Renderer eng((int*)img.data(),iWidth, iHeight);
+	eng.set_background(0x101010);
 	eng.add_ambient_light(0x808080, 1.);
 	eng.add_diffuse_light(0xFF0000, 1., Point3(1., 0., 1.));
 	eng.add_diffuse_light(0x00FF00, 1., Point3(0., 1., 0.));
@@ -31,7 +32,7 @@ int main()
 		eng.clear(); 
 		eng.draw_mesh(torus.mesh());
 		eng.draw_mesh(sphere.mesh());
-		ImageIoBmp::write(string("cube_")+to_string(i)+".bmp", &img);
+		ImageIoBmp::write(string("solid_")+to_string(i)+".bmp", &img);
 	}
 
 	return 0;

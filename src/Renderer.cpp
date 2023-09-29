@@ -26,6 +26,7 @@ Renderer::Renderer(int* pBuffer,int xm, int ym)
 
 	_wbuffer = new float[_Xmax * _Ymax];
 
+	_iBackgroundColor = 0;
 	clear();
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -316,10 +317,14 @@ void Renderer::clear()
 		float* w = j * _Xmax + _wbuffer;
 		for (int i = 0; i < _Xmax; i++)
 		{
-			pixels[i] = 0;
+			pixels[i] =_iBackgroundColor;
 			w[i] = 0.; // z=inf -> w=0
 		}
 	}
+}
+void Renderer::set_background(int iBackgroundColor)
+{
+	_iBackgroundColor = iBackgroundColor;
 }
 ////////////////////////////////////////////////////////////////////////////////
 void Renderer::draw_line(const Point3& p1, const Point3& p2, int color)
