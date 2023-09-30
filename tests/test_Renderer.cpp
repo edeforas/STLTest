@@ -28,7 +28,7 @@ int main()
 
 	for (int i = 0; i < 360; i += 10)
 	{
-		eng.set_camera(0., 0., 0., dAhead, +i, i/2., i/3., dZoom);
+		eng.set_camera(0., 0., 0., dAhead, i, i/2., i/3., dZoom);
 		eng.clear(); 
 		eng.draw_mesh(torus.mesh());
 		eng.draw_mesh(sphere.mesh());

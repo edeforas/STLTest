@@ -21,8 +21,8 @@ target_link_libraries(test_meshoperations libSTLTest)
 add_executable(test_measurements test_measurements.cpp  )
 target_link_libraries(test_measurements libSTLTest)
 
-add_executable(test_Renderer test_Renderer.cpp )
-target_link_libraries(test_Renderer libSTLTest)
+add_executable(test_renderer test_renderer.cpp )
+target_link_libraries(test_renderer libSTLTest)
 
-add_executable(test_BMPFile test_BMPFile.cpp  )
-target_link_libraries(test_BMPFile libSTLTest)
+add_executable(test_bmpfile test_bmpfile.cpp  )
+target_link_libraries(test_bmpfile libSTLTest)

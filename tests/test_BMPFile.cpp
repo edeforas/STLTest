@@ -25,7 +25,7 @@ int main()
 		cout << "Unable to write Mandelbrot.bmp, good path and rights?" << endl;
 		return -1;
 	}
-
+ 
 	// test image I/O
 	Image imgMandelbrot2;
 	if (ImageIoBmp::read("Mandelbrot.bmp", &imgMandelbrot2) == false)
