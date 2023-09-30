@@ -14,10 +14,10 @@ int main()
 	torus.set_color(PIXELRGB(128, 128, 128));
 	torus.set_precision(32);
 
-	BodyFactory::SphereUV sphere(20);
+	BodyFactory::SphereUV sphere(10);
 	sphere.set_color(PIXELRGB(64, 64, 255));
 	sphere.set_precision(32);
-//	sphere.transform().set_global_translation(Point3(20, 0., 0.));
+	sphere.transform().set_global_translation(Point3(10, 0., 0.));
 
 	Image img(iWidth, iHeight, 4);
 	Renderer eng((int*)img.data(),iWidth, iHeight);
@@ -31,7 +31,7 @@ int main()
 	{
 		eng.set_camera(0., 0., 0., dAhead, i, i/2., i/3., dZoom);
 		eng.clear(); 
-//		eng.draw_mesh(torus.mesh());
+		eng.draw_mesh(torus.mesh());
 		eng.draw_mesh(sphere.mesh());
 		ImageIoBmp::write(string("solid_")+to_string(i)+".bmp", &img);
 	}

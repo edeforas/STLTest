@@ -224,13 +224,12 @@ bool Renderer::draw_trapeze(double ax, double aw, double bx, double bw, int ay, 
 		double t = (double)(cy - (_Ymax-1)) / (cy - ay);
 		assert(t >= 0.);
 		assert(t <= 1.);
-
+ 
 		cy = _Ymax-1;
-		cx = cx * t + (1. - t)*ax;
-		cw = cw * t + (1. - t)*aw;
-		dx = dx * t + (1. - t)*bx;
-		dw = dw * t + (1. - t)*bw;
-		return false;
+		cx = ax * t + (1. - t)*cx;
+		cw = aw * t + (1. - t)*cw;
+		dx = bx * t + (1. - t)*dx;
+		dw = bw * t + (1. - t)*dw;
 	}
 
 	assert(ay >= 0);
