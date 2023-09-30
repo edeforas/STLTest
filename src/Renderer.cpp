@@ -199,10 +199,11 @@ bool Renderer::draw_trapeze(double ax, double aw, double bx, double bw, int ay, 
 	assert(cx <= dx);
 	assert(ay <= cy);
 
+
 	if (cy < 0.)
 		return false;
 
-	if (ay > _Ymax)
+	if (ay >= _Ymax)
 		return false;
 
 	//reduce facet y
@@ -215,21 +216,26 @@ bool Renderer::draw_trapeze(double ax, double aw, double bx, double bw, int ay, 
 		ay = 0;
 		ax = cx * t + (1. - t)*ax;
 		aw = cw * t + (1. - t)*aw;
-		bx = cx * t + (1. - t)*bx;
-		bw = cw * t + (1. - t)*bw;
+		bx = dx * t + (1. - t)*bx;
+		bw = dw * t + (1. - t)*bw;
 	}
-	if (cy > _Ymax )
+	if (cy >= _Ymax )
 	{
-		double t = (double)(cy - _Ymax) / (cy - ay);
+		double t = (double)(cy - (_Ymax-1)) / (cy - ay);
 		assert(t >= 0.);
 		assert(t <= 1.);
 
-		cy = _Ymax;
+		cy = _Ymax-1;
 		cx = cx * t + (1. - t)*ax;
 		cw = cw * t + (1. - t)*aw;
 		dx = dx * t + (1. - t)*bx;
 		dw = dw * t + (1. - t)*bw;
+		return false;
 	}
+
+	assert(ay >= 0);
+	assert(ay <= cy);
+	assert(cy < _Ymax);
 
 	//plot trapeze
 	assert(ay <= cy);
@@ -257,12 +263,12 @@ void Renderer::draw_horizontal_line(int ax, double aw, int bx, double bw, int y,
 
 	if (bx < 0)
 		return;
-	if (ax > _Xmax)
+	if (ax >= _Xmax)
 		return;
 
 	if (y < 0)
 		return;
-	if (y > _Xmax)
+	if (y >= _Ymax)
 		return;
 
 	// cut the line if out of screen
@@ -275,13 +281,13 @@ void Renderer::draw_horizontal_line(int ax, double aw, int bx, double bw, int y,
 		ax = 0; // bx* t + (1. - t) * ax;
 		aw = bw * t + (1. - t)*aw;
 	}
-	if (bx > _Xmax)
+	if (bx >= _Xmax)
 	{
-		double t = (float)(bx - _Xmax) / (bx - ax);
+		double t = (float)(bx - (_Xmax-1)) / (bx - ax);
 		assert(t >= 0.);
 		assert(t <= 1.);
 
-		bx = _Xmax; // ax* t + (1. - t) * bx;
+		bx = _Xmax-1; // ax* t + (1. - t) * bx;
 		bw = aw * t + (1. - t)*bw;
 	}
 
