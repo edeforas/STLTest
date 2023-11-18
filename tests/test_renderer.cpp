@@ -3,6 +3,9 @@
 #include "ImageIoBmp.h"
 #include "BodyFactory.h"
 
+#include <iostream>
+using namespace std;
+
 /////////////////////////////////////////////////////////////////////////////
 int main()
 {
@@ -11,21 +14,21 @@ int main()
 	double dAngleX = 20., dAngleY = 10., dAhead = 50., dZoom = 2000.;
 	
 	BodyFactory::Torus torus(15, 3);
-	torus.set_color(PIXELRGB(128, 128, 128));
+	torus.set_color(GREY);
 	torus.set_precision(32);
 
 	BodyFactory::SphereUV sphere(10);
-	sphere.set_color(PIXELRGB(64, 64, 255));
+	sphere.set_color(DARK_GREEN);
 	sphere.set_precision(32);
 	sphere.transform().set_global_translation(Point3(10, 0., 0.));
 
 	Image img(iWidth, iHeight, 4);
 	Renderer eng((int*)img.data(),iWidth, iHeight);
 	eng.set_background(0x101010);
-	eng.add_ambient_light(0x808080, 1.);
-	eng.add_diffuse_light(0xFF0000, 1., Point3(1., 0., 1.));
-	eng.add_diffuse_light(0x00FF00, 1., Point3(0., 1., 0.));
-	eng.add_diffuse_light(0x0000FF, 1., Point3(0., 1., 1.));
+	eng.add_ambient_light(GREY, 1.);
+	eng.add_diffuse_light(RED, 1., Point3(1., 0., 1.));
+	eng.add_diffuse_light(GREEN, 1., Point3(0., 1., 0.));
+	eng.add_diffuse_light(BLUE, 1., Point3(0., 1., 1.));
 
 	for (int i = 0; i < 360; i += 10)
 	{
@@ -33,9 +36,18 @@ int main()
 		eng.clear(); 
 		eng.draw_mesh(torus.mesh());
 		eng.draw_mesh(sphere.mesh());
-		ImageIoBmp::write(string("solid_")+to_string(i)+".bmp", &img);
+
+		string sFile = string("solid_") + to_string(i) + ".bmp";
+
+		cout << "Writing: " << sFile << endl;
+		if (!ImageIoBmp::write(sFile, &img))
+		{
+			cout << "Unable to write rendered image" << sFile << ", good path and rights ? " << endl;
+			return -1;
+		}
 	}
 
+	cout << "Test Finished.";
 	return 0;
 }
 /////////////////////////////////////////////////////////////////////////////

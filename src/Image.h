@@ -5,7 +5,7 @@
 #include <vector>
 using namespace std;
 
-#define PIXELRGB(a,b,c) ((a<<16)+(b<<8)+c)
+#include "Color.h"
 
 class Image
 {
