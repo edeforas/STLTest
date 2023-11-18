@@ -1,5 +1,5 @@
-#ifndef _MeshTessellate
-#define _MeshTessellate
+#ifndef _MeshTessellate_
+#define _MeshTessellate_
 
 #include "Mesh.h"
 

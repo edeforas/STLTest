@@ -24,7 +24,7 @@ int main()
 
 	Image img(iWidth, iHeight, 4);
 	Renderer eng((int*)img.data(),iWidth, iHeight);
-	eng.set_background(0x101010);
+	eng.set_background(DARK_GREY);
 	eng.add_ambient_light(GREY, 1.);
 	eng.add_diffuse_light(RED, 1., Point3(1., 0., 1.));
 	eng.add_diffuse_light(GREEN, 1., Point3(0., 1., 0.));

@@ -4,17 +4,17 @@
 #include "Mesh.h"
 
 ///////////////////////////////////////////////////////////////////////////
-BodyIntersection::BodyIntersection():
+BodyIntersection::BodyIntersection() :
 	Body()
-{ 
-	_A = ( Body*)nullptr;
-	_B = ( Body*)nullptr;
+{
+	_A = (Body*)nullptr;
+	_B = (Body*)nullptr;
 }
 
 BodyIntersection::~BodyIntersection()
 { }
 
-void BodyIntersection::set( Body& A, Body& B)
+void BodyIntersection::set(Body& A, Body& B)
 {
 	_A = &A;
 	_B = &B;

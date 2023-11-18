@@ -9,7 +9,7 @@ TriangleTIN::TriangleTIN(int vertex1, int vertex2, int vertex3)
 	bUnlinked = false;
 }
 ///////////////////////////////////////////////////////////////////////////
-VertexTIN::VertexTIN(const Point3& vertex):
+VertexTIN::VertexTIN(const Point3& vertex) :
 	_vertex(vertex)
 { }
 ///////////////////////////////////////////////////////////////////////////
@@ -38,7 +38,7 @@ void MeshKernelTIN::set_vertex(int iVertex, const Point3& vertex)
 	assert(iVertex >= 0);
 	assert(iVertex < (int)_vVertices.size());
 
-	_vVertices[iVertex]._vertex= vertex ;
+	_vVertices[iVertex]._vertex = vertex;
 }
 
 void MeshKernelTIN::get_vertex(int iVertex, Point3& vertex) const

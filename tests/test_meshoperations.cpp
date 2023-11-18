@@ -22,7 +22,11 @@ int main()
 				m.unlink_triangle(i);
 		}
 
-		STLFile::save("sphere_triangles_deleted.stl", m);
+		if (!STLFile::save("sphere_triangles_deleted.stl", m))
+		{
+			cout << "Unable to write sphere_triangles_deleted.stl, good path and rights ? " << endl;
+			return -1;
+		}
 	}
 
 	{
@@ -39,7 +43,11 @@ int main()
 			m.split_triangle_with_vertex(i, iNewVertex);
 		}
 
-		STLFile::save("sphere_triangles_subdiv.stl", m);
+		if (!STLFile::save("sphere_triangles_subdiv.stl", m))
+		{
+			cout << "Unable to write sphere_triangles_subdiv.stl, good path and rights ? " << endl;
+			return -1;
+		}
 	}
 
 	cout << "Test Finished.";

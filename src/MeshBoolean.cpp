@@ -30,7 +30,7 @@ void MeshBoolean::split_meshes(const Mesh& A, const Mesh& B, Mesh& Aoutside, Mes
 		{
 			if (B.is_triangle_unlinked(j))
 				continue;
-			
+
 			Triangle3 tB;
 			B.get_triangle(j, tB);
 			BoundingBox3 bB(tB);
@@ -86,7 +86,7 @@ void MeshBoolean::split_meshes(const Mesh& A, const Mesh& B, Mesh& Aoutside, Mes
 					}
 				}
 			}
-			
+
 			vector<Point3> pointACutB;
 			if (tB.intersect_with(Segment3(tA.p1(), tA.p2()), pIntersection))
 				pointACutB.push_back(pIntersection);
@@ -97,7 +97,7 @@ void MeshBoolean::split_meshes(const Mesh& A, const Mesh& B, Mesh& Aoutside, Mes
 			if (tB.intersect_with(Segment3(tA.p2(), tA.p3()), pIntersection))
 				pointACutB.push_back(pIntersection);
 
-			if(pointACutB.size() > 0)
+			if (pointACutB.size() > 0)
 			{
 				assert(pointACutB.size() <= 2); // two triangle cannot intersect more than 2 times
 
@@ -111,7 +111,7 @@ void MeshBoolean::split_meshes(const Mesh& A, const Mesh& B, Mesh& Aoutside, Mes
 					int iVertice = Boutside.add_vertex(p);
 
 					Boutside.get_triangle(Boutside.nb_triangles() - 3, tB);
-					if (tB.contains(p)) //todo add bounding box ... tests
+					if (tB.contains(p)) //todo add bounding box tests
 					{
 						Boutside.split_triangle_with_vertex(Boutside.nb_triangles() - 3, iVertice); // new triangles are created at the end
 					}

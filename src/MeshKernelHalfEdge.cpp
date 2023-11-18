@@ -7,7 +7,7 @@ VertexHalfEdge::VertexHalfEdge()
 {
 	halfEdge = -1; // not associated
 }
-VertexHalfEdge::VertexHalfEdge(const Point3& p):
+VertexHalfEdge::VertexHalfEdge(const Point3& p) :
 	vertex(p)
 {
 	halfEdge = -1; // not associated
@@ -75,13 +75,13 @@ void MeshKernelHalfEdge::get_triangle(int iTriangle, int& iVertex1, int& iVertex
 	assert(iTriangle < (int)_vTriangles.size());
 
 	int HF1 = _vTriangles[iTriangle].halfEdge;
-	iVertex1=_vHalfEdges[HF1].originVertex;
+	iVertex1 = _vHalfEdges[HF1].originVertex;
 
 	int HF2 = _vHalfEdges[HF1].nextHalfEdge;
-	iVertex2=_vHalfEdges[HF2].originVertex;
+	iVertex2 = _vHalfEdges[HF2].originVertex;
 
 	int HF3 = _vHalfEdges[HF2].nextHalfEdge;
-	iVertex3=_vHalfEdges[HF3].originVertex;
+	iVertex3 = _vHalfEdges[HF3].originVertex;
 
 	assert(_vHalfEdges[HF3].nextHalfEdge == HF1); //only allowing triangles
 }
@@ -117,7 +117,7 @@ bool MeshKernelHalfEdge::is_triangle_unlinked(int iTriangle)
 int MeshKernelHalfEdge::add_triangle(int iVertex1, int iVertex2, int iVertex3)
 {
 	// create edges
-	
+
 	// add edges
 
 	// add face 
@@ -130,7 +130,7 @@ int MeshKernelHalfEdge::add_triangle(int iVertex1, int iVertex2, int iVertex3)
 
 void MeshKernelHalfEdge::get_near_triangles(int iTriangle, int& iT1, int& iT2, int& iT3) const
 {
-	assert(iTriangle >=0);
+	assert(iTriangle >= 0);
 	assert(iTriangle < (int)_vTriangles.size());
 
 	int iEdge0 = _vTriangles[iTriangle].halfEdge;

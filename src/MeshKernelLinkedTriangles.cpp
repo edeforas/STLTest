@@ -13,9 +13,9 @@ TriangleLT::TriangleLT(int vertex1, int vertex2, int vertex3)
 	_reserved = 0;
 }
 ///////////////////////////////////////////////////////////////////////////
-VertexLT::VertexLT(const Point3& vertex):
+VertexLT::VertexLT(const Point3& vertex) :
 	_vertex(vertex)
-{ 
+{
 	_oneTriangle = -1;
 }
 ///////////////////////////////////////////////////////////////////////////
@@ -44,7 +44,7 @@ void MeshKernelLinkedTriangles::set_vertex(int iVertex, const Point3& vertex)
 	assert(iVertex >= 0);
 	assert(iVertex < (int)_vVertices.size());
 
-	_vVertices[iVertex]._vertex= vertex;
+	_vVertices[iVertex]._vertex = vertex;
 }
 
 void MeshKernelLinkedTriangles::get_vertex(int iVertex, Point3& vertex) const
@@ -71,7 +71,7 @@ int MeshKernelLinkedTriangles::add_triangle(int iVertex1, int iVertex2, int iVer
 	assert(iVertex3 < (int)_vVertices.size());
 
 	_vTriangles.push_back(TriangleLT(iVertex1, iVertex2, iVertex3));
-	int iTriangle= (int)(_vTriangles.size() - 1);
+	int iTriangle = (int)(_vTriangles.size() - 1);
 
 	// associate with near triangles
 	int iT1 = _vVertices[iVertex1]._oneTriangle;
@@ -114,7 +114,7 @@ void MeshKernelLinkedTriangles::unlink_triangle(int iTriangle)
 	_vTriangles[iTriangle]._unlinked = -1;
 
 	// with near triangles
-	int iT1=-1, iT2=-1, iT3=-1;
+	int iT1 = -1, iT2 = -1, iT3 = -1;
 	get_near_triangles(iTriangle, iT1, iT2, iT3);
 
 	//simple unoptimized code for now, todo use rotate_corner_CCW
@@ -161,7 +161,7 @@ bool MeshKernelLinkedTriangles::is_triangle_unlinked(int iTriangle)
 	assert(iTriangle >= 0);
 	assert(iTriangle < (int)_vTriangles.size());
 
-	return _vTriangles[iTriangle]._unlinked==-1;
+	return _vTriangles[iTriangle]._unlinked == -1;
 }
 
 int MeshKernelLinkedTriangles::nb_triangles() const

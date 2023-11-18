@@ -27,5 +27,5 @@ void Transform::set_global_translation(const Point3& translation)
 
 void Transform::set_global_translation(double x, double y, double z)
 {
-	_translation = Point3(x,y,z);
+	_translation = Point3(x, y, z);
 }

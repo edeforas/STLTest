@@ -51,7 +51,7 @@ bool MeshMeasurements::is_oriented_outside(const Mesh& m)
 
 bool MeshMeasurements::is_clean(const Mesh& m)
 {
-	if (has_no_degenerated_triangles(m)==false)
+	if (has_no_degenerated_triangles(m) == false)
 		return false;
 
 	if (is_oriented_outside(m) == false)
@@ -60,18 +60,18 @@ bool MeshMeasurements::is_clean(const Mesh& m)
 	if (is_closed(m) == false)
 		return false;
 
-	if (has_no_self_intersections(m)==false)
+	if (has_no_self_intersections(m) == false)
 		return false;
 
-	if( has_no_isolated_vertices( m) == false)
+	if (has_no_isolated_vertices(m) == false)
 		return false;
-		
+
 	if (has_no_duplicated_vertices(m) == false)
-		return false; 
-			
-	if (has_no_short_edges( m) == false)
 		return false;
-								
+
+	if (has_no_short_edges(m) == false)
+		return false;
+
 	if (has_no_self_intersections(m) == false)
 		return false;
 

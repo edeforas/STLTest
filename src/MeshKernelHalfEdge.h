@@ -13,60 +13,60 @@ using namespace std;
 class TriangleHalfEdge
 {
 public:
-    TriangleHalfEdge();
+	TriangleHalfEdge();
 
-    int halfEdge;
-    bool bUnlinked;
+	int halfEdge;
+	bool bUnlinked;
 };
 
 class HalfEdge
 {
 public:
-    HalfEdge();
-    int originVertex;
+	HalfEdge();
+	int originVertex;
 
-    int halfEdgePair;
-    int triangle;
-    int nextHalfEdge;
-    int prevHalfEdge;
+	int halfEdgePair;
+	int triangle;
+	int nextHalfEdge;
+	int prevHalfEdge;
 
 };
 
 class VertexHalfEdge
 {
 public:
-    VertexHalfEdge();
-    explicit VertexHalfEdge(const Point3& p);
-    
-    Point3 vertex;
-    int halfEdge;
+	VertexHalfEdge();
+	explicit VertexHalfEdge(const Point3& p);
+
+	Point3 vertex;
+	int halfEdge;
 };
 
 ///////////////////////////////////////////////////////////////////////////
 class MeshKernelHalfEdge : public MeshKernel
 {
 public:
-    MeshKernelHalfEdge();
-    virtual ~MeshKernelHalfEdge();
-    virtual void clear() override;
+	MeshKernelHalfEdge();
+	virtual ~MeshKernelHalfEdge();
+	virtual void clear() override;
 
-    virtual int nb_vertices() const override; // return the vertice id
-    virtual int add_vertex(const Point3& vertex) override;
-    virtual void set_vertex(int iVertex, const Point3& vertex) override;
-    virtual void get_vertex(int iVertex, Point3& vertex) const override;
+	virtual int nb_vertices() const override; // return the vertice id
+	virtual int add_vertex(const Point3& vertex) override;
+	virtual void set_vertex(int iVertex, const Point3& vertex) override;
+	virtual void get_vertex(int iVertex, Point3& vertex) const override;
 
-    virtual int nb_triangles() const override;
-    virtual int add_triangle(int iVertex1, int iVertex2, int iVertex3) override; // return the triangle id
-    virtual void get_triangle(int iTriangle, int& iVertex1, int& iVertex2, int& iVertex3) const override;
-    virtual void unlink_triangle(int iTriangle) override;
-    virtual bool is_triangle_unlinked(int iTriangle) override;
+	virtual int nb_triangles() const override;
+	virtual int add_triangle(int iVertex1, int iVertex2, int iVertex3) override; // return the triangle id
+	virtual void get_triangle(int iTriangle, int& iVertex1, int& iVertex2, int& iVertex3) const override;
+	virtual void unlink_triangle(int iTriangle) override;
+	virtual bool is_triangle_unlinked(int iTriangle) override;
 
-    virtual void get_near_triangles(int iTriangle, int& iT1, int& iT2, int& iT3) const override;
+	virtual void get_near_triangles(int iTriangle, int& iT1, int& iT2, int& iT3) const override;
 
 private:
-    vector<TriangleHalfEdge> _vTriangles;
+	vector<TriangleHalfEdge> _vTriangles;
 	vector<VertexHalfEdge> _vVertices;
-    vector<HalfEdge> _vHalfEdges;
+	vector<HalfEdge> _vHalfEdges;
 };
 ///////////////////////////////////////////////////////////////////////////
 

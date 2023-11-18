@@ -14,14 +14,14 @@ public:
 	void set_screen(int width, int height, double zoom);
 	Point3 local_ref(const Point3& pc) const;
 	void project(const Point3& pPixels, int& screenx, int& screeny, double& w); //w =1/z
-	
+
 private:
 	//rotation angles
 	double _yawCos, _yawSin, _pitchCos, _pitchSin, _rollCos, _rollSin;
-	double _yaw, _pitch, _roll; 
+	double _yaw, _pitch, _roll;
 
 	//camera position
-	double _x, _y, _z, _ahead; 
+	double _x, _y, _z, _ahead;
 
 	// screen properties
 	double _zoomFactor;
