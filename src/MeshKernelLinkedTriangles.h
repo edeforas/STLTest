@@ -18,13 +18,6 @@ public:
     int _reserved;
 };
 
-class VertexLT
-{
-public:
-	explicit VertexLT(const Point3& vertex);
-    Point3 _vertex;
-    int _oneTriangle;
-};
 ///////////////////////////////////////////////////////////////////////////
 class MeshKernelLinkedTriangles: public MeshKernel
 {
@@ -49,7 +42,7 @@ public:
 
 private:
     vector<TriangleLT> _vTriangles;
-	vector<VertexLT> _vVertices;
+	vector<Point3> _vVertices;
 };
 ///////////////////////////////////////////////////////////////////////////
 

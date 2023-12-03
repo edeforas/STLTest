@@ -13,12 +13,6 @@ TriangleLT::TriangleLT(int vertex1, int vertex2, int vertex3)
 	_reserved = 0;
 }
 ///////////////////////////////////////////////////////////////////////////
-VertexLT::VertexLT(const Point3& vertex) :
-	_vertex(vertex)
-{
-	_oneTriangle = -1;
-}
-///////////////////////////////////////////////////////////////////////////
 MeshKernelLinkedTriangles::MeshKernelLinkedTriangles()
 { }
 
@@ -36,7 +30,7 @@ void MeshKernelLinkedTriangles::clear()
 // return index of new triangle
 int MeshKernelLinkedTriangles::add_vertex(const Point3& vertex)
 {
-	_vVertices.push_back(VertexLT(vertex));
+	_vVertices.push_back(vertex);
 	return (int)_vVertices.size() - 1;
 }
 
@@ -45,7 +39,7 @@ void MeshKernelLinkedTriangles::set_vertex(int iVertex, const Point3& vertex)
 	assert(iVertex >= 0);
 	assert(iVertex < (int)_vVertices.size());
 
-	_vVertices[iVertex]._vertex = vertex;
+	_vVertices[iVertex] = vertex;
 }
 
 void MeshKernelLinkedTriangles::get_vertex(int iVertex, Point3& vertex) const
@@ -53,7 +47,7 @@ void MeshKernelLinkedTriangles::get_vertex(int iVertex, Point3& vertex) const
 	assert(iVertex >= 0);
 	assert(iVertex < (int)_vVertices.size());
 
-	vertex = _vVertices[iVertex]._vertex;
+	vertex = _vVertices[iVertex];
 }
 
 int MeshKernelLinkedTriangles::nb_vertices() const
@@ -82,11 +76,6 @@ int MeshKernelLinkedTriangles::add_triangle(int iVertex1, int iVertex2, int iVer
 		//todo
 	}
 
-	// associate with vertex
-	_vVertices[iVertex1]._oneTriangle = iTriangle;
-	_vVertices[iVertex2]._oneTriangle = iTriangle;
-	_vVertices[iVertex3]._oneTriangle = iTriangle;
-
 	return iTriangle;
 }
 
@@ -111,7 +100,7 @@ void MeshKernelLinkedTriangles::unlink_triangle(int iTriangle)
 	int iT1 = -1, iT2 = -1, iT3 = -1;
 	get_near_triangles(iTriangle, iT1, iT2, iT3);
 
-	//simple unoptimized code for now, todo use rotate_corner_CCW
+	//simple unoptimized code for now
 	if (iT1 != -1)
 	{
 		TriangleLT& tmp = _vTriangles[iT1];
@@ -160,7 +149,7 @@ bool MeshKernelLinkedTriangles::is_triangle_unlinked(int iTriangle)
 
 int MeshKernelLinkedTriangles::nb_triangles() const
 {
-	return (int)_vTriangles.size();
+	return (int)_vTriangles.size();  //alos count unlinked triangles
 }
 
 void MeshKernelLinkedTriangles::get_near_triangles(int iTriangle, int& iT1, int& iT2, int& iT3) const
@@ -174,8 +163,6 @@ void MeshKernelLinkedTriangles::get_near_triangles(int iTriangle, int& iT1, int&
 	iT2 = t._triangle2;
 	iT3 = t._triangle3;
 }
-
-
 
 bool MeshKernelLinkedTriangles::get_triangles_having_vertices(int iVertex1, int  iVertex2, int& iTriangle1, int& iTriangle2) const
 {
