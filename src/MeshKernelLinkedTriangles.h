@@ -45,10 +45,9 @@ public:
     virtual bool is_triangle_unlinked(int iTriangle) override;
 
     virtual void get_near_triangles(int iTriangle, int& iT1, int& iT2, int& iT3) const override;
+    virtual bool get_triangles_having_vertices(int iVertex1, int  iVertex2, int& iTriangle1, int& iTriangle2) const override;
 
 private:
-    int find_next_face_CCW(int iVertex, int iFace) const;
-
     vector<TriangleLT> _vTriangles;
 	vector<VertexLT> _vVertices;
 };

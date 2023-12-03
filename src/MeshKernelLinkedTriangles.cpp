@@ -33,6 +33,7 @@ void MeshKernelLinkedTriangles::clear()
 	_vVertices.clear();
 }
 ///////////////////////////////////////////////////////////////////////////
+// return index of new triangle
 int MeshKernelLinkedTriangles::add_vertex(const Point3& vertex)
 {
 	_vVertices.push_back(VertexLT(vertex));
@@ -74,18 +75,11 @@ int MeshKernelLinkedTriangles::add_triangle(int iVertex1, int iVertex2, int iVer
 	int iTriangle = (int)(_vTriangles.size() - 1);
 
 	// associate with near triangles
-	int iT1 = _vVertices[iVertex1]._oneTriangle;
-	int iT2 = _vVertices[iVertex2]._oneTriangle;
-	int iT3 = _vVertices[iVertex3]._oneTriangle;
-
-	// todo
-	if (iT1 != -1)
+	int iTriangle1, iTriangle2;
+	get_triangles_having_vertices(iVertex1, iVertex2, iTriangle1, iTriangle2);
+	if(iTriangle1==-1)
 	{
-
-	}
-	else
-	{
-
+		//todo
 	}
 
 	// associate with vertex
@@ -180,9 +174,14 @@ void MeshKernelLinkedTriangles::get_near_triangles(int iTriangle, int& iT1, int&
 	iT2 = t._triangle2;
 	iT3 = t._triangle3;
 }
-int MeshKernelLinkedTriangles::find_next_face_CCW(int iVertex, int iFace) const
+
+
+
+bool MeshKernelLinkedTriangles::get_triangles_having_vertices(int iVertex1, int  iVertex2, int& iTriangle1, int& iTriangle2) const
 {
-	return 0;
+	return false;
+	//todo
 }
-///////////////////////////////////////////////////////////////////////////
+
+
 

@@ -33,14 +33,27 @@ int main()
 		// test triangles subdivision
 		BodyFactory::SphereGeodesic sphere(100.);
 		Mesh& m = sphere.mesh();
-		int iNbTriangles = m.nb_triangles(); // only changing the old triangles, not the created 
-		for (int i = 0; i < iNbTriangles; i++)
-		{
-			Point3 p1, p2, p3, vCenter;
-			m.get_triangle(i, p1, p2, p3);
 
-			int iNewVertex = m.add_vertex((p1 + p2 + p3) / 3.);
-			m.split_triangle_with_vertex(i, iNewVertex);
+		// two scales split
+		for (int iScale = 0; iScale < 2; iScale++)
+		{
+			int iNbTriangles = m.nb_triangles(); // only changing the old triangles, not the created 
+			for (int i = 0; i < iNbTriangles; i++)
+			{
+				Point3 p1, p2, p3, vCenter;
+				m.get_triangle(i, p1, p2, p3);
+
+				int iNewVertex = m.add_vertex((p1 + p2 + p3) / 3.);
+				m.split_triangle_with_vertex(i, iNewVertex);
+			}
+		}
+
+		//renormalize all vertices
+		for (int i = 0; i < m.nb_vertices(); i++)
+		{
+			Point3 v;
+			m.get_vertex(i,v);
+			m.set_vertex(i, v.normalized());
 		}
 
 		if (!STLFile::save("sphere_triangles_subdiv.stl", m))

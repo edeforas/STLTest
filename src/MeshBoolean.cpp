@@ -125,7 +125,6 @@ void MeshBoolean::split_meshes(const Mesh& A, const Mesh& B, Mesh& Aoutside, Mes
 					}
 				}
 			}
-
 		}
 	}
 }

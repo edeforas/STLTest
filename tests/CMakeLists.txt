@@ -18,6 +18,9 @@ target_link_libraries(test_level_of_details libSTLTest)
 add_executable(test_meshoperations test_meshoperations.cpp  )
 target_link_libraries(test_meshoperations libSTLTest)
 
+add_executable(test_fractal_tetrahedron test_fractal_tetrahedron.cpp  )
+target_link_libraries(test_fractal_tetrahedron libSTLTest)
+
 add_executable(test_measurements test_measurements.cpp  )
 target_link_libraries(test_measurements libSTLTest)
 

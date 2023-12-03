@@ -34,7 +34,9 @@ public:
     void get_near_triangles(int iTriangle, int& iT1, int& iT2, int& iT3) const;
 
     void split_triangle_with_vertex(int iTriangle, int iVertex); //create 3 triangles with edges and new vertex, remove iTriangle
-    void flip_triangle(int iTriangle); //flip triangle so normal is opposed
+    bool split_edge_with_vertex(int iVertex1, int iVertex2, int iVertexSplit); // 4 new triangles added at the end, unlink the two previous faces
+
+    void flip_triangle(int iTriangle); //flip triangle so normal is reversed
 
     void add_quad(int iVertex1, int iVertex2, int iVertex3, int iVertex4);
     void add_pentagon(int iVertex1, int iVertex2, int iVertex3, int iVertex4, int iVertex5);      

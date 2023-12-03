@@ -6,6 +6,8 @@
 #include "MeshKernelHalfEdge.h"
 #include "MeshKernelLinkedTriangles.h"
 
+#include "Util.h"
+
 ///////////////////////////////////////////////////////////////////////////
 Mesh::Mesh()
 { 
@@ -204,7 +206,47 @@ void Mesh::split_triangle_with_vertex(int iTriangle, int iVertex)
 	_pKernel->add_triangle(iV2, iV3, iVertex);
 	_pKernel->add_triangle(iV3, iV1, iVertex);
 }
+//////////////////////////////////////////////////////////////////////////////////
+// split edge at new vertice
+// return false if vertices are not sharing triangles edges
+bool Mesh::split_edge_with_vertex(int iVertex1, int iVertex2, int iVertexSplit) // 4 new triangles added at the end
+{
+	int iTriangle1, iTriangle2;
+	bool bOk=_pKernel->get_triangles_having_vertices(iVertex1, iVertex2, iTriangle1, iTriangle2);
+	if (!bOk)
+		return false;
 
+	assert(iTriangle1 != -1);
+	assert(iTriangle2 != -1);
+
+	//split triangle1
+	int iV1, iV2, iV3;
+	_pKernel->get_triangle(iTriangle1, iV1, iV2, iV3);
+	if (iV1 != iVertex1)
+		rotate(iV1, iV2, iV3);
+	if (iV1 != iVertex1)
+		rotate(iV1, iV2, iV3);
+	assert(iV1 == iVertex1);
+
+	_pKernel->add_triangle(iV1, iVertexSplit, iV3);
+	_pKernel->add_triangle(iVertexSplit, iV2, iV3);
+	_pKernel->unlink_triangle(iTriangle1);
+
+	//split triangle2
+	_pKernel->get_triangle(iTriangle2, iV1, iV2, iV3);
+	if (iV2 != iVertex2)
+		rotate(iV1, iV2, iV3);
+	if (iV2 != iVertex2)
+		rotate(iV1, iV2, iV3);
+	assert(iV2 == iVertex2);
+
+	_pKernel->add_triangle(iV2, iVertexSplit, iV3);
+	_pKernel->add_triangle(iVertexSplit, iV1, iV3);
+	_pKernel->unlink_triangle(iTriangle2);
+
+	return true;
+}
+//////////////////////////////////////////////////////////////////////////////////
 void Mesh::flip_triangle(int iTriangle)
 { 	
 	assert(iTriangle >= 0);
@@ -215,7 +257,7 @@ void Mesh::flip_triangle(int iTriangle)
 	_pKernel->unlink_triangle(iTriangle);
 	_pKernel->add_triangle(iV1, iV3, iV2);
 }
-
+//////////////////////////////////////////////////////////////////////////////////
 void Mesh::clear()
 {
 	_pKernel->clear();

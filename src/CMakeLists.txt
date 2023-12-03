@@ -26,6 +26,7 @@ set(STLTEST_FILES
 	ImageGenerator.cpp ImageGenerator.h
 	ImageIoBmp.cpp ImageIoBmp.h
 	Color.h
+	Util.h
 )
 
 include_directories(.)
