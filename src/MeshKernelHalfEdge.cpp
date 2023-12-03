@@ -145,7 +145,7 @@ void MeshKernelHalfEdge::get_near_triangles(int iTriangle, int& iT1, int& iT2, i
 	assert(_vHalfEdges[iEdge2].nextHalfEdge == iEdge0);
 }
 
-bool MeshKernelHalfEdge::get_triangles_having_vertices(int iVertex1, int  iVertex2, int& iTriangle1, int& iTriangle2) const
+bool MeshKernelHalfEdge::get_triangles_near_edge(int iVertex1, int  iVertex2, int& iTriangle1, int& iTriangle2) const
 {
 	//todo
 

@@ -212,7 +212,7 @@ void Mesh::split_triangle_with_vertex(int iTriangle, int iVertex)
 bool Mesh::split_edge_with_vertex(int iVertex1, int iVertex2, int iVertexSplit) // 4 new triangles added at the end
 {
 	int iTriangle1, iTriangle2;
-	bool bOk=_pKernel->get_triangles_having_vertices(iVertex1, iVertex2, iTriangle1, iTriangle2);
+	bool bOk=_pKernel->get_triangles_near_edge(iVertex1, iVertex2, iTriangle1, iTriangle2);
 	if (!bOk)
 		return false;
 

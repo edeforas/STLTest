@@ -26,9 +26,7 @@ public:
 
     //spatial relations
     virtual void get_near_triangles(int iTriangle, int& iT1, int& iT2, int& iT3) const = 0;
-    virtual bool get_triangles_having_vertices(int iVertex1,int  iVertex2, int& iTriangle1, int& iTriangle2) const=0;
-//    virtual void replace_near_triangle(int iTriangle, int iOldNear, int iNewNear) =0;
-
+    virtual bool get_triangles_near_edge(int iVertex1,int  iVertex2, int& iTriangle1, int& iTriangle2) const=0;
 };
 ///////////////////////////////////////////////////////////////////////////
 

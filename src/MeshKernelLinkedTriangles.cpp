@@ -70,7 +70,7 @@ int MeshKernelLinkedTriangles::add_triangle(int iVertex1, int iVertex2, int iVer
 
 	// associate with near triangles
 	int iTriangle1, iTriangle2;
-	get_triangles_having_vertices(iVertex1, iVertex2, iTriangle1, iTriangle2);
+	get_triangles_near_edge(iVertex1, iVertex2, iTriangle1, iTriangle2);
 	if(iTriangle1==-1)
 	{
 		//todo
@@ -164,7 +164,7 @@ void MeshKernelLinkedTriangles::get_near_triangles(int iTriangle, int& iT1, int&
 	iT3 = t._triangle3;
 }
 
-bool MeshKernelLinkedTriangles::get_triangles_having_vertices(int iVertex1, int  iVertex2, int& iTriangle1, int& iTriangle2) const
+bool MeshKernelLinkedTriangles::get_triangles_near_edge(int iVertex1, int  iVertex2, int& iTriangle1, int& iTriangle2) const
 {
 	return false;
 	//todo

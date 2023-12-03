@@ -110,7 +110,7 @@ void MeshKernelTIN::get_near_triangles(int iTriangle, int& iT1, int& iT2, int& i
 
 
 
-bool MeshKernelTIN::get_triangles_having_vertices(int iVertex1, int  iVertex2, int& iTriangle1, int& iTriangle2) const
+bool MeshKernelTIN::get_triangles_near_edge(int iVertex1, int  iVertex2, int& iTriangle1, int& iTriangle2) const
 {
 	return false;
 	//todo
