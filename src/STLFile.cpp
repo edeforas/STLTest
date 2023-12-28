@@ -36,7 +36,7 @@ namespace STLFile
                 continue;
 
             Point3 p1, p2, p3;
-            mesh.get_triangle(i, p1,p2,p3);
+            mesh.get_triangle_vertices(i, p1,p2,p3);
 
             // write normals
             f.write((char*)(&fzero), 4);

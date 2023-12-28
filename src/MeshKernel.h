@@ -20,7 +20,7 @@ public:
     //triangles management
     virtual int nb_triangles() const =0;
 	virtual int add_triangle(int iVertex1, int iVertex2, int iVertex3) =0; // return the triangle id
-    virtual void get_triangle(int iTriangle, int& iVertex1, int& iVertex2, int& iVertex3) const =0;
+    virtual void get_triangle_vertices(int iTriangle, int& iVertex1, int& iVertex2, int& iVertex3) const =0;
     virtual void unlink_triangle(int iTriangle) =0;
     virtual bool is_triangle_unlinked(int iTriangle) = 0;
 

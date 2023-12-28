@@ -69,7 +69,7 @@ int MeshKernelHalfEdge::nb_triangles() const
 	return (int)_vTriangles.size();
 }
 
-void MeshKernelHalfEdge::get_triangle(int iTriangle, int& iVertex1, int& iVertex2, int& iVertex3) const
+void MeshKernelHalfEdge::get_triangle_vertices(int iTriangle, int& iVertex1, int& iVertex2, int& iVertex3) const
 {
 	assert(iTriangle >= 0);
 	assert(iTriangle < (int)_vTriangles.size());

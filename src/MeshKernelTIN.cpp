@@ -69,7 +69,7 @@ int MeshKernelTIN::add_triangle(int iVertex1, int iVertex2, int iVertex3)
 	return (int)(_vTriangles.size() - 1);
 }
 
-void MeshKernelTIN::get_triangle(int iTriangle, int& iVertex1, int& iVertex2, int& iVertex3) const
+void MeshKernelTIN::get_triangle_vertices(int iTriangle, int& iVertex1, int& iVertex2, int& iVertex3) const
 {
 	assert(iTriangle >= 0);
 	assert(iTriangle < (int)_vTriangles.size());

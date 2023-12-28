@@ -57,7 +57,7 @@ public:
 
 	virtual int nb_triangles() const override;
 	virtual int add_triangle(int iVertex1, int iVertex2, int iVertex3) override; // return the triangle id
-	virtual void get_triangle(int iTriangle, int& iVertex1, int& iVertex2, int& iVertex3) const override;
+	virtual void get_triangle_vertices(int iTriangle, int& iVertex1, int& iVertex2, int& iVertex3) const override;
 	virtual void unlink_triangle(int iTriangle) override;
 	virtual bool is_triangle_unlinked(int iTriangle) override;
 

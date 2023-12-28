@@ -41,7 +41,7 @@ int main()
 			for (int i = 0; i < iNbTriangles; i++)
 			{
 				Point3 p1, p2, p3, vCenter;
-				m.get_triangle(i, p1, p2, p3);
+				m.get_triangle_vertices(i, p1, p2, p3);
 
 				int iNewVertex = m.add_vertex((p1 + p2 + p3) / 3.);
 				m.split_triangle_with_vertex(i, iNewVertex);

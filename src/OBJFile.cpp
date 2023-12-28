@@ -44,7 +44,7 @@ namespace OBJFile
 			if (mesh.is_triangle_unlinked(i))
 				continue;
 
-			mesh.get_triangle(i, iVertex1, iVertex2, iVertex3);
+			mesh.get_triangle_vertices(i, iVertex1, iVertex2, iVertex3);
 			f << "f " << iVertex1 + 1 << " " << iVertex2 + 1 << " " << iVertex3 + 1 << endl;
 		}
 

@@ -63,7 +63,7 @@ void Mesh::get_triangle(int iTriangle, Triangle3& f) const
 	assert(iTriangle < _pKernel->nb_triangles());
 
 	int iP1, iP2, iP3;
-	get_triangle(iTriangle, iP1, iP2, iP3);
+	get_triangle_vertices(iTriangle, iP1, iP2, iP3);
 	
 	Point3 v1,v2,v3;
 	_pKernel->get_vertex(iP1,v1);
@@ -75,21 +75,21 @@ void Mesh::get_triangle(int iTriangle, Triangle3& f) const
 	f.set_p3(v3);
 }
 
-void Mesh::get_triangle(int iTriangle, int& iVertex1, int& iVertex2, int& iVertex3) const
+void Mesh::get_triangle_vertices(int iTriangle, int& iVertex1, int& iVertex2, int& iVertex3) const
 {
 	assert(iTriangle >= 0);
 	assert(iTriangle < _pKernel->nb_triangles());
 
-	_pKernel->get_triangle(iTriangle,iVertex1,iVertex2,iVertex3);
+	_pKernel->get_triangle_vertices(iTriangle,iVertex1,iVertex2,iVertex3);
 }
 
-void Mesh::get_triangle(int iTriangle, Point3& p1, Point3& p2, Point3& p3) const
+void Mesh::get_triangle_vertices(int iTriangle, Point3& p1, Point3& p2, Point3& p3) const
 {
 	assert(iTriangle >= 0);
 	assert(iTriangle < _pKernel->nb_triangles());
 
 	int iP1, iP2, iP3;
-	get_triangle(iTriangle, iP1, iP2, iP3);
+	get_triangle_vertices(iTriangle, iP1, iP2, iP3);
 
 	_pKernel->get_vertex(iP1, p1);
 	_pKernel->get_vertex(iP2, p2);
@@ -136,7 +136,7 @@ void Mesh::add_mesh(const Mesh& f)
 		if (f.is_triangle_unlinked(i))
 			continue;
 
-		f.get_triangle(i, iVertex1, iVertex2, iVertex3);
+		f.get_triangle_vertices(i, iVertex1, iVertex2, iVertex3);
 		add_triangle(iVertex1 + iNbVertices, iVertex2 + iNbVertices, iVertex3 + iNbVertices);
 	}
 }
@@ -199,7 +199,7 @@ void Mesh::split_triangle_with_vertex(int iTriangle, int iVertex)
 
 	//replace triangle with 3 triangles built with iVertex
 	int iV1, iV2, iV3;
-	_pKernel->get_triangle(iTriangle, iV1, iV2, iV3);
+	_pKernel->get_triangle_vertices(iTriangle, iV1, iV2, iV3);
 	_pKernel->unlink_triangle(iTriangle);
 
 	_pKernel->add_triangle(iV1, iV2, iVertex);
@@ -221,7 +221,7 @@ bool Mesh::split_edge_with_vertex(int iVertex1, int iVertex2, int iVertexSplit) 
 
 	//split triangle1
 	int iV1, iV2, iV3;
-	_pKernel->get_triangle(iTriangle1, iV1, iV2, iV3);
+	_pKernel->get_triangle_vertices(iTriangle1, iV1, iV2, iV3);
 	if (iV1 != iVertex1)
 		rotate(iV1, iV2, iV3);
 	if (iV1 != iVertex1)
@@ -233,7 +233,7 @@ bool Mesh::split_edge_with_vertex(int iVertex1, int iVertex2, int iVertexSplit) 
 	_pKernel->unlink_triangle(iTriangle1);
 
 	//split triangle2
-	_pKernel->get_triangle(iTriangle2, iV1, iV2, iV3);
+	_pKernel->get_triangle_vertices(iTriangle2, iV1, iV2, iV3);
 	if (iV2 != iVertex2)
 		rotate(iV1, iV2, iV3);
 	if (iV2 != iVertex2)
@@ -253,7 +253,7 @@ void Mesh::flip_triangle(int iTriangle)
 	assert(iTriangle < _pKernel->nb_triangles());
 
 	int iV1, iV2, iV3;
-	_pKernel->get_triangle(iTriangle, iV1, iV2, iV3);
+	_pKernel->get_triangle_vertices(iTriangle, iV1, iV2, iV3);
 	_pKernel->unlink_triangle(iTriangle);
 	_pKernel->add_triangle(iV1, iV3, iV2);
 }
