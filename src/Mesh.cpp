@@ -209,13 +209,8 @@ void Mesh::split_triangle_with_vertex(int iTriangle, int iVertex)
 //////////////////////////////////////////////////////////////////////////////////
 // split edge at new vertice
 // return false if vertices are not sharing triangles edges
-bool Mesh::split_edge_with_vertex(int iVertex1, int iVertex2, int iVertexSplit) // 4 new triangles added at the end
+bool Mesh::split_edge_with_vertex(int iTriangle1, int iTriangle2, int iVertex1, int iVertex2, int iVertexSplit) // 4 new triangles added at the end
 {
-	int iTriangle1, iTriangle2;
-	bool bOk=_pKernel->get_triangles_near_edge(iVertex1, iVertex2, iTriangle1, iTriangle2);
-	if (!bOk)
-		return false;
-
 	assert(iTriangle1 != -1);
 	assert(iTriangle2 != -1);
 
@@ -298,3 +293,56 @@ int Mesh::nb_vertices() const
 {
 	return _pKernel->nb_vertices();
 }
+
+int Mesh::split_triangle(int iTriangle, const Triangle3 & tSplitter)
+{
+	Triangle3 tA; get_triangle(iTriangle, tA);
+	Point3 pIntersection;
+
+	//compute if any segment cut any triangles, save intersection
+	vector<Point3> pointBCutA;
+	if (tA.intersect_with(Segment3(tSplitter.p1(), tSplitter.p2()), pIntersection))
+		pointBCutA.push_back(pIntersection);
+
+	if (tA.intersect_with(Segment3(tSplitter.p1(), tSplitter.p3()), pIntersection))
+		pointBCutA.push_back(pIntersection);
+
+	if (tA.intersect_with(Segment3(tSplitter.p2(), tSplitter.p3()), pIntersection))
+		pointBCutA.push_back(pIntersection);
+
+	if (pointBCutA.size() > 0)
+	{
+		assert(pointBCutA.size() <= 2); // two triangle cannot intersect more than 2 times
+
+		const auto& p = pointBCutA[0];
+		int iVertice = add_vertex(p);
+		split_triangle_with_vertex(iTriangle, iVertice); // new triangles are created at the end
+
+		if (pointBCutA.size() > 1)
+		{
+			const auto& p = pointBCutA[1];
+			int iVertice = add_vertex(p);
+
+			get_triangle(nb_triangles() - 3, tA);
+			if (tA.contains(p)) //todo add bounding box ... tests
+			{
+				split_triangle_with_vertex(nb_triangles() - 3, iVertice); // new triangles are created at the end
+			}
+			else //only 2 point max are possible
+			{
+				get_triangle(nb_triangles() - 2, tA);
+				if (tA.contains(p)) //todo add bounding box ... tests
+					split_triangle_with_vertex(nb_triangles() - 2, iVertice); // new triangles are created at the end
+				else
+					split_triangle_with_vertex(nb_triangles() - 1, iVertice); // new triangles are created at the end
+			}
+		}
+	}
+
+	return 0; // todo
+
+
+// must use split_edge_with_vertex()
+
+}
+
