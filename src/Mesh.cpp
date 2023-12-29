@@ -207,9 +207,8 @@ void Mesh::split_triangle_with_vertex(int iTriangle, int iVertex)
 	_pKernel->add_triangle(iV3, iV1, iVertex);
 }
 //////////////////////////////////////////////////////////////////////////////////
-// split edge at new vertice
-// return false if vertices are not sharing triangles edges
-bool Mesh::split_edge_with_vertex(int iTriangle1, int iTriangle2, int iVertex1, int iVertex2, int iVertexSplit) // 4 new triangles added at the end
+// split edge at new vertex
+void Mesh::split_edge_with_vertex(int iTriangle1, int iTriangle2, int iVertex1, int iVertex2, int iVertexSplit) // 4 new triangles added at the end
 {
 	assert(iTriangle1 != -1);
 	assert(iTriangle2 != -1);
@@ -238,8 +237,6 @@ bool Mesh::split_edge_with_vertex(int iTriangle1, int iTriangle2, int iVertex1, 
 	_pKernel->add_triangle(iV2, iVertexSplit, iV3);
 	_pKernel->add_triangle(iVertexSplit, iV1, iV3);
 	_pKernel->unlink_triangle(iTriangle2);
-
-	return true;
 }
 //////////////////////////////////////////////////////////////////////////////////
 void Mesh::flip_triangle(int iTriangle)
@@ -299,28 +296,27 @@ int Mesh::split_triangle(int iTriangle, const Triangle3 & tSplitter)
 	Triangle3 tA; get_triangle(iTriangle, tA);
 	Point3 pIntersection;
 
-	//compute if any segment cut any triangles, save intersection
-	vector<Point3> pointBCutA;
+	//compute triangle - segment intersections
+	vector<Point3> vIntersections;
 	if (tA.intersect_with(Segment3(tSplitter.p1(), tSplitter.p2()), pIntersection))
-		pointBCutA.push_back(pIntersection);
+		vIntersections.push_back(pIntersection);
 
 	if (tA.intersect_with(Segment3(tSplitter.p1(), tSplitter.p3()), pIntersection))
-		pointBCutA.push_back(pIntersection);
+		vIntersections.push_back(pIntersection);
 
-	if (tA.intersect_with(Segment3(tSplitter.p2(), tSplitter.p3()), pIntersection))
-		pointBCutA.push_back(pIntersection);
-
-	if (pointBCutA.size() > 0)
+	if(vIntersections.size()<2) // two triangle cannot intersect more than 2 times
+		if (tA.intersect_with(Segment3(tSplitter.p2(), tSplitter.p3()), pIntersection))
+			vIntersections.push_back(pIntersection);
+	
+	if (vIntersections.size() > 0)
 	{
-		assert(pointBCutA.size() <= 2); // two triangle cannot intersect more than 2 times
-
-		const auto& p = pointBCutA[0];
+		const auto& p = vIntersections[0];
 		int iVertice = add_vertex(p);
 		split_triangle_with_vertex(iTriangle, iVertice); // new triangles are created at the end
 
-		if (pointBCutA.size() > 1)
+		if (vIntersections.size() > 1)
 		{
-			const auto& p = pointBCutA[1];
+			const auto& p = vIntersections[1];
 			int iVertice = add_vertex(p);
 
 			get_triangle(nb_triangles() - 3, tA);
@@ -339,7 +335,7 @@ int Mesh::split_triangle(int iTriangle, const Triangle3 & tSplitter)
 		}
 	}
 
-	return 0; // todo
+	return 0; // todo: return number of new triangles crated
 
 
 // must use split_edge_with_vertex()

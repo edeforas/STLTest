@@ -135,7 +135,7 @@ bool Renderer::draw_triangle_1color(const Point3& A, const Point3& B, const Poin
 	//order points in y axis
 	if ((by <= ay) && (by <= cy))
 	{
-		//exchange B and A
+		//swap B and A
 		int tmpx = ax; ax = bx; bx = tmpx;
 		int tmpy = ay; ay = by; by = tmpy;
 		double tmpw = aw; aw = bw; bw = tmpw;
@@ -143,7 +143,7 @@ bool Renderer::draw_triangle_1color(const Point3& A, const Point3& B, const Poin
 	else
 		if ((cy <= ay) && (cy <= by))
 		{
-			//exchange C and A
+			//swap C and A
 			int tmpx = ax; ax = cx; cx = tmpx;
 			int tmpy = ay; ay = cy; cy = tmpy;
 			double tmpw = aw; aw = cw; cw = tmpw;
@@ -151,7 +151,7 @@ bool Renderer::draw_triangle_1color(const Point3& A, const Point3& B, const Poin
 
 	if (cy < by)
 	{
-		//exchange C and B
+		//swap C and B
 		int tmpx = bx; bx = cx; cx = tmpx;
 		int tmpy = by; by = cy; cy = tmpy;
 		double tmpw = bw; bw = cw; cw = tmpw;

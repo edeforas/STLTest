@@ -34,7 +34,7 @@ public:
     void get_near_triangles(int iTriangle, int& iT1, int& iT2, int& iT3) const;
 
     void split_triangle_with_vertex(int iTriangle, int iVertex); //create 3 triangles with edges and new vertex, remove iTriangle
-    bool split_edge_with_vertex(int iTriangle1, int iTriangle2,int iVertex1, int iVertex2, int iVertexSplit); // 4 new triangles added at the end, unlink the two previous faces
+    void split_edge_with_vertex(int iTriangle1, int iTriangle2,int iVertex1, int iVertex2, int iVertexSplit); // 4 new triangles added at the end, unlink the two previous faces
     int split_triangle(int iTriangle, const Triangle3& tSplitter);
 
     void flip_triangle(int iTriangle); //flip triangle so normal is reversed

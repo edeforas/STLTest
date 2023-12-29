@@ -29,8 +29,6 @@ void MeshBoolean::split_meshes(const Mesh& A, const Mesh& B, Mesh& Aoutside, Mes
 			B.get_triangle(j, tB);
 			BoundingBox3 bboxB(tB); // slow: we recompute the bbox each time
 
-			Point3 pIntersection;
-
 			if (bboxA.intersect_with(bboxB) == false)
 				continue;
 

@@ -302,12 +302,12 @@ bool Triangle3::intersect_with(const Triangle3& t) const
 	if (bA.intersect_with(bB) == false)
 		return false;
 
-	Plane3 pB(t);
-	if (cut_by(pB)==false)
+	Plane3 planeB(t);
+	if (cut_by(planeB)==false)
 		return false;
 
-	Plane3 pA(*this);
-	if (t.cut_by(pA) == false)
+	Plane3 planeA(*this);
+	if (t.cut_by(planeA) == false)
 		return false;
 
 	//compute if any segment cut any triangles, slow but easy
