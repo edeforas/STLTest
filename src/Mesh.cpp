@@ -357,10 +357,10 @@ void Mesh::split_triangle(int iTriangle, const Triangle3 & tSplitter)
 		bool b13 = seg13.intersect(splitSeg, inter13);
 		bool b23 = seg23.intersect(splitSeg, inter23);
 
-		if ((b12 || b13 || 23) == false)
+		if ((b12 || b13 || b23) == false)
 			return; // not intersection
 
-		assert((b12 && b13 && b23) == false); //not possible to intersect all sides
+		assert((b12 && b13 && b23) == false); //not possible to intersect all 3 sides
 
 
 	}
