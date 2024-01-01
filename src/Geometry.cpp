@@ -241,7 +241,7 @@ void Triangle3::set_p3(const Point3& p)
 	_p3=p;
 }
 
-bool Triangle3::cut_by(const Plane3& p) const
+bool Triangle3::cutted_by(const Plane3& p) const
 {
 	int nbPositive=0, nbNegative=0;
 
@@ -257,7 +257,7 @@ bool Triangle3::cut_by(const Plane3& p) const
 	if (proj3 > 0.) nbPositive++;
 	if (proj3 < 0.) nbNegative++;
 
-	return (nbPositive>0 && nbNegative>0 );
+	return ((nbPositive>0) && (nbNegative>0));
 }
 
 bool Triangle3::contains(const Point3& p) const
@@ -303,11 +303,11 @@ bool Triangle3::intersect_with(const Triangle3& t) const
 		return false;
 
 	Plane3 planeB(t);
-	if (cut_by(planeB)==false)
+	if (cutted_by(planeB)==false)
 		return false;
 
 	Plane3 planeA(*this);
-	if (t.cut_by(planeA) == false)
+	if (t.cutted_by(planeA) == false)
 		return false;
 
 	//compute if any segment cut any triangles, slow but easy
@@ -398,7 +398,7 @@ bool Plane3::intersect_with(const Segment3& s, Point3& pIntersection) const
 	double u = _a * (p2._x- p1._x) + _b * (p2._y- p1._y) + _c * (p2._z - p1._z);
 
 	if (u == 0.)
-		return false; // no intersection
+		return false; // no intersection, parallel
 
 	double t = -k / u;
 	if ((t <= 0.) || (t >= 1.)) //must be in the segment (not a line)

@@ -84,7 +84,7 @@ public:
 	void set_p2(const Point3& p);
 	void set_p3(const Point3& p);
 
-	bool cut_by(const Plane3& p) const;
+	bool cutted_by(const Plane3& p) const;
 	bool contains(const Point3& p) const;
 	bool intersect_with(const Segment3& s, Point3& pIntersection) const;
 	bool intersect_with(const Triangle3& t) const;

@@ -9,7 +9,7 @@ void MeshBoolean::split_meshes(const Mesh& A, const Mesh& B, Mesh& Aoutside, Mes
 	Aoutside = A;
 	Boutside = B;
 
-	//slow for now
+	//slow, for now
 	for (int i = 0; i < A.nb_triangles(); i++)
 	{
 		if (A.is_triangle_unlinked(i))
@@ -18,7 +18,6 @@ void MeshBoolean::split_meshes(const Mesh& A, const Mesh& B, Mesh& Aoutside, Mes
 		Triangle3 tA;
 		A.get_triangle(i, tA);
 		BoundingBox3 bboxA(tA);
-		Plane3 planeA(tA);
 
 		for (int j = 0; j < B.nb_triangles(); j++)
 		{
@@ -32,16 +31,9 @@ void MeshBoolean::split_meshes(const Mesh& A, const Mesh& B, Mesh& Aoutside, Mes
 			if (bboxA.intersect_with(bboxB) == false)
 				continue;
 
-			Plane3 planeB(tB); // slow: we recompute the plan each time
-			if (tA.cut_by(planeB) == false)
-				continue;
-
-			if (tB.cut_by(planeA) == false)
-				continue;
-
 			// triangles tA and tB, are valid, and may cut
-			int iNewTrianglesA= Aoutside.split_triangle(i, tB);
-			int iNewTrianglesB = Boutside.split_triangle(j, tA);
+			Aoutside.split_triangle(i, tB);
+			Boutside.split_triangle(j, tA);
 		}
 	}
 }

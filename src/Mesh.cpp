@@ -189,6 +189,15 @@ void Mesh::add_pentagon(int iVertex1, int iVertex2, int iVertex3, int iVertex4, 
 	_pKernel->add_triangle(iVertex1, iVertex3, iVertex5);
 }
 
+void Mesh::split_triangle_with_vertex(int iTriangle, const Point3& p)
+{
+	assert(iTriangle >= 0);
+	assert(iTriangle < _pKernel->nb_triangles());
+
+	int iVertexP1 = add_vertex(p);
+	split_triangle_with_vertex(iTriangle, iVertexP1);
+}
+
 void Mesh::split_triangle_with_vertex(int iTriangle, int iVertex)
 { 
 	assert(iTriangle >= 0);
@@ -291,23 +300,59 @@ int Mesh::nb_vertices() const
 	return _pKernel->nb_vertices();
 }
 
-int Mesh::split_triangle(int iTriangle, const Triangle3 & tSplitter)
+void Mesh::split_triangle(int iTriangle, const Triangle3 & tSplitter)
 {
 	Triangle3 tA; get_triangle(iTriangle, tA);
 	Point3 pIntersection;
 
+	//quick intersection test, both mut cut each others
+	Plane3 planeSplitter(tSplitter);
+	if (tA.cutted_by(planeSplitter) == false)
+		return ;
+
+	Plane3 planeA(tA);
+	if (tSplitter.cutted_by(planeA) == false)
+		return ;
+
 	//compute triangle - segment intersections
 	vector<Point3> vIntersections;
-	if (tA.intersect_with(Segment3(tSplitter.p1(), tSplitter.p2()), pIntersection))
+	if (planeA.intersect_with(Segment3(tSplitter.p1(), tSplitter.p2()), pIntersection))
 		vIntersections.push_back(pIntersection);
 
-	if (tA.intersect_with(Segment3(tSplitter.p1(), tSplitter.p3()), pIntersection))
+	if (planeA.intersect_with(Segment3(tSplitter.p1(), tSplitter.p3()), pIntersection))
 		vIntersections.push_back(pIntersection);
 
-	if(vIntersections.size()<2) // two triangle cannot intersect more than 2 times
-		if (tA.intersect_with(Segment3(tSplitter.p2(), tSplitter.p3()), pIntersection))
+	if(vIntersections.size()<2) // two triangle cannot intersect more than 2 times, quick abort
+		if (planeA.intersect_with(Segment3(tSplitter.p2(), tSplitter.p3()), pIntersection))
 			vIntersections.push_back(pIntersection);
 	
+	assert(vIntersections.size() <= 2);
+	if (vIntersections.empty())
+		return ;
+
+	const Point3 & P1 = vIntersections[0];
+	if (vIntersections.size()==1) //limit case
+	{
+		if (tA.contains(P1))
+			split_triangle_with_vertex(iTriangle, P1);
+		return;
+	}
+
+	// global case, 2 intersections
+	const Point3& P2 = vIntersections[1];
+	bool bP1Inside = tA.contains(P1);
+	bool bP2Inside = tA.contains(P2);
+
+	if (bP1Inside == false && bP2Inside == false)
+	{
+		//triangle is cutted by a segment
+
+	}
+
+
+	/*
+
+
 	if (vIntersections.size() > 0)
 	{
 		const auto& p = vIntersections[0];
@@ -335,8 +380,7 @@ int Mesh::split_triangle(int iTriangle, const Triangle3 & tSplitter)
 		}
 	}
 
-	return 0; // todo: return number of new triangles crated
-
+	*/
 
 // must use split_edge_with_vertex()
 
