@@ -343,9 +343,25 @@ void Mesh::split_triangle(int iTriangle, const Triangle3 & tSplitter)
 	bool bP1Inside = tA.contains(P1);
 	bool bP2Inside = tA.contains(P2);
 
-	if (bP1Inside == false && bP2Inside == false)
+	if ( (bP1Inside == false) && (bP2Inside == false))
 	{
-		//triangle is cutted by a segment
+		//triangle is maybe cutted by a segment
+		Segment3 seg12(tA.p1(), tA.p2());
+		Segment3 seg13(tA.p1(), tA.p3());
+		Segment3 seg23(tA.p2(), tA.p3());
+	
+		Segment3 splitSeg(P1, P2);
+		Point3 inter12, inter23, inter13;
+
+		bool b12 = seg12.intersect(splitSeg, inter12);
+		bool b13 = seg13.intersect(splitSeg, inter13);
+		bool b23 = seg23.intersect(splitSeg, inter23);
+
+		if ((b12 || b13 || 23) == false)
+			return; // not intersection
+
+		assert((b12 && b13 && b23) == false); //not possible to intersect all sides
+
 
 	}
 

@@ -198,9 +198,68 @@ void Segment3::set_p2(const Point3& p)
 	_p2 = p;
 }
 
-double Segment3::length() const
+double Segment3::norm() const
 {
 	return (_p1 - _p2).norm();
+}
+
+double Segment3::norm_square() const
+{
+	return (_p1 - _p2).norm_square();
+}
+
+bool Segment3::intersect(const Segment3& s, Point3& pIntersection) const
+{	
+	// from https://paulbourke.net/geometry/pointlineplane/lineline.c
+	// and https://stackoverflow.com/questions/2316490/the-algorithm-to-find-the-point-of-intersection-of-two-3d-line-segment
+
+//	Calculate the line segment PaPb that is the shortest route between two lines P1P2 and P3P4.
+//		Pa = P1 + mua(P2 - P1) and	Pb = P3 + mub(P4 - P3)
+//		Return false if no solution exists.
+
+	const Point3 P1 = p1();
+	const Point3 P2 = p2();
+	const Point3 P3 = s.p1();
+	const Point3 P4 = s.p2();
+
+	double EPS = 1.e-10;
+
+	Point3 p13 = P1 - P3;
+	Point3 p43 = P4 - P3;
+
+	if (p43.norm_square() < EPS * EPS)
+		return false;
+
+	Point3 p21 = P2 - P1;
+
+	if (p21.norm_square() < EPS * EPS)
+		return false;
+
+	double d4321 = p43.dot_product(p21);
+	double d4343 = p43.dot_product(p43);
+	double d2121 = p21.dot_product(p21);
+
+	double denom = d2121 * d4343 - d4321 * d4321;
+	if (fabs(denom) < EPS)
+		return false;
+
+	double d1321 = p13.dot_product(p21);
+	double d1343 = p13.dot_product(p43);
+	double numerator = d1343 * d4321 - d1321 * d4343;
+	double mua = numerator / denom;
+
+	if ((mua < 0.) || (mua > 1.))
+		return false;
+
+	pIntersection= P1 + p21 * mua; //is the nearest point on first segment, the intersection if coplanar
+
+	// can compute the nearest point on the other segment
+	// double mub = (d1343 + d4321 * mua) / d4343;
+	// pIntersectionb = P3 + p43 * mub;
+	//if ((mub < 0.) || (mub > 1.))
+	//	return false;
+
+	return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////

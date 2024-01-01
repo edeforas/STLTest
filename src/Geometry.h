@@ -63,7 +63,10 @@ public:
 	void set_p1(const Point3& p);
 	void set_p2(const Point3& p);
 
-	double length() const;
+	double norm() const;
+	double norm_square() const;
+
+	bool intersect(const Segment3& s, Point3& pIntersection) const;
 
 private:
 	Point3 _p1;
