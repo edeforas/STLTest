@@ -1,4 +1,4 @@
-set(STLTEST_FILES
+set(CADTEST_FILES
 	Body.cpp Body.h
 	BodyFactory.cpp BodyFactory.h
 	BodyUnion.cpp BodyUnion.h
@@ -38,4 +38,4 @@ set(STLTEST_FILES
 )
 
 include_directories(.)
-add_library( libSTLTest STATIC ${STLTEST_FILES})
+add_library( libCADTest STATIC ${CADTEST_FILES})
