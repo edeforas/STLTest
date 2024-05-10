@@ -2,12 +2,22 @@ import numpy as np
 import math
 import matplotlib.pyplot as plt
 
+#bernstein polynoms of deg2 and 3
 def B02(t):
     return (1-t)**2
 def B12(t):
     return 2*t*(1-t)
 def B22(t):
     return t**2
+
+def B03(t):
+    return (1-t)**3
+def B13(t):
+    return 3*t*((1-t)**2)
+def B23(t):
+    return 3*(t**2)*(1-t)
+def B23(t):
+    return t**3
 
 def rational_bezier_deg2(t,P,W):
     return (B02(t)*P[0]*W[0]+B12(t)*P[1]*W[1]+B22(t)*P[2]*W[2])/(B02(t)*W[0]+B12(t)*W[1]+B22(t)*W[2])
@@ -32,7 +42,10 @@ print(f"max_norm={norm.max()} min_norm={norm.min()}")
 #rational bezier fit test
 px=[1,1,0]
 py=[0,1,1]
-w=[1,math.sqrt(2)/2,1]
+
+w=[1,math.sqrt(2)/2,1]# works
+w=[1,1,2] # works also and is simpler (computed by hand equalizing Re(P),Im(P))
+
 x=rational_bezier_deg2(t,px,w)
 y=rational_bezier_deg2(t,py,w)
 plt.plot(x,y,label='rational_bezier_deg2')
