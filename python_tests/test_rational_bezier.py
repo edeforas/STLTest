@@ -20,19 +20,28 @@ def B33(t):
 
 #elevate a degreee 2 bezier to a degree 3 bezier
 # from https://pages.mtu.edu/~shene/COURSES/cs3621/NOTES/spline/Bezier/bezier-elev.html
+
+# rational elevation from: http://www.cad.zju.edu.cn/home/hwlin/pdf_files/A-simple-method-for-approximating-rational-Bezier-curve-using-Bezier-curves.pdf
+
 def degree_elevation(P2,W2):
     n=2
     P3=[]
-    P3.append(P2[0])
-    P3.append(P2[0]*1/(n+1)+P2[1]*(1-1/(n+1)))
-    P3.append(P2[1]*2/(n+1)+P2[2]*(1-2/(n+1)))
-    P3.append(P2[n])
+    P3.append(P2[0]*W2[0])
+    P3.append(P2[0]*W2[0]*1/(n+1)+P2[1]*W2[1]*(1-1/(n+1)))
+    P3.append(P2[1]*W2[1]*2/(n+1)+P2[2]*W2[2]*(1-2/(n+1)))
+    P3.append(P2[2]*W2[2])
 
-    W3=[] #todo
+    W3=[]
     W3.append(W2[0])
     W3.append(W2[0]*1/(n+1)+W2[1]*(1-1/(n+1)))
     W3.append(W2[1]*2/(n+1)+W2[2]*(1-2/(n+1)))
     W3.append(W2[n])
+
+    P3[0]/=W3[0]
+    P3[1]/=W3[1]
+    P3[2]/=W3[2]
+    P3[3]/=W3[3]
+
 
     return P3,W3 # todo W
 
