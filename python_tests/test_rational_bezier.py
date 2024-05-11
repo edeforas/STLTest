@@ -42,8 +42,7 @@ def degree_elevation(P2,W2):
     P3[2]/=W3[2]
     P3[3]/=W3[3]
 
-
-    return P3,W3 # todo W
+    return P3,W3
 
 def rational_bezier_deg2(t,P,W):
     numerator=(B02(t)*P[0]*W[0]+B12(t)*P[1]*W[1]+B22(t)*P[2]*W[2])
@@ -86,7 +85,7 @@ plt.plot(x,y,label='rational_bezier_deg2')
 norm=np.sqrt(x**2+y**2)
 print(f"deg2 max_norm={norm.max()} min_norm={norm.min()}")
 
-#convert a deg2 bezier to a deg3 bezier
+#convert a deg2 rational bezier to a deg3 rational bezier
 px3,w3=degree_elevation(px,w)
 py3,w3=degree_elevation(py,w)
 x=rational_bezier_deg3(t,px3,w3)
