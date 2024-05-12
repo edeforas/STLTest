@@ -45,11 +45,19 @@ def degree_elevation(P2,W2):
     return P3,W3
 
 def rational_bezier_deg2(t,P,W):
+    
+    if W is None: # convert to uniform rational if needed
+        W=np.ones(len(P))
+
     numerator=(B02(t)*P[0]*W[0]+B12(t)*P[1]*W[1]+B22(t)*P[2]*W[2])
     denumerator=(B02(t)*W[0]+B12(t)*W[1]+B22(t)*W[2])
     return numerator/denumerator
     
 def rational_bezier_deg3(t,P,W):
+
+    if W is None: # convert to uniform rational if needed
+        W=np.ones(len(P))
+
     numerator=(B03(t)*P[0]*W[0]+B13(t)*P[1]*W[1]+B23(t)*P[2]*W[2]+B33(t)*P[3]*W[3])
     denumerator=(B03(t)*W[0]+B13(t)*W[1]+B23(t)*W[2]+B33(t)*W[3])
     return numerator/denumerator
@@ -93,6 +101,17 @@ y=rational_bezier_deg3(t,py3,w3)
 plt.plot(x,y,label='rational_bezier_deg3')
 norm=np.sqrt(x**2+y**2)
 print(f"deg3 max_norm={norm.max()} min_norm={norm.min()}")
+
+#approximation using cubic bezier, not rational
+# from Good Approximation of Circles by Curvature-Continuous Bézier curves
+# 0.55 number optimized to 0.5519151 for a lower max error
+px=[1,1,0.5519151,0]
+py=[0,0.5519151,1,1]
+x=rational_bezier_deg3(t,px,None)
+y=rational_bezier_deg3(t,py,None)
+plt.plot(x,y,label='cubic approximation_bezier_deg3')
+norm=np.sqrt(x**2+y**2)
+print(f"cubic approximation max_norm={norm.max()} min_norm={norm.min()}")
 
 plt.grid()
 plt.legend()
