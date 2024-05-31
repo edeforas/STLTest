@@ -26,6 +26,7 @@ set(CADTEST_FILES
 	StepFile.cpp StepFile.h
 	
 	BezierTriangle.cpp BezierTriangle.h
+	BezierPatch.cpp BezierPatch.h
 	
 	Renderer.cpp Renderer.h
 	RendererCamera.cpp RendererCamera.h
@@ -34,7 +35,7 @@ set(CADTEST_FILES
 	ImageGenerator.cpp ImageGenerator.h
 	ImageIoBmp.cpp ImageIoBmp.h
 	Color.h
-	Util.h
+	Util.cpp Util.h
 )
 
 include_directories(.)

@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-inline double square(double a)
+inline double squared(double a) //todo factorize ?
 { return a*a; }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -112,7 +112,7 @@ Point3 Point3::operator-(const Point3& p) const
 
 double Point3::distance_square(const Point3& p) const
 {
-	return square(_x - p._x) + square(_y - p._y) + square(_z - p._z);
+	return squared(_x - p._x) + squared(_y - p._y) + squared(_z - p._z);
 }
 
 double Point3::dot_product(const Point3& p) const

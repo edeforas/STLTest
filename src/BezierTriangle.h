@@ -2,6 +2,7 @@
 #define _BezierTriangle_
 
 #include "Geometry.h"
+#include "Mesh.h"
 
 ///////////////////////////////////////////////////////////////////////////
 class BezierTriangle
@@ -17,8 +18,8 @@ public:
 
     void clear();
 
+    void to_mesh(Mesh& m);
 protected:
-
     Point3 _P1, _P2, _P3;
     Point3 _controlP1P2, _controlP2P1;
     Point3 _controlP1P3, _controlP3P1;
