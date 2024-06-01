@@ -1,12 +1,12 @@
-#include "NurbsSurface.h"
+#include "Body.h"
 #include "StepFile.h"
 
 ///////////////////////////////////////////////////////////////////////////
 int main()
 {
-	NurbsSurface surf;
-	StepFile::load("test_sphere_hole.step", surf);
-	StepFile::save("test_sphere_hole_out.step", surf);
+	Body body;
+	StepFile::load("test_sphere_hole.step", body);
+	StepFile::save("test_sphere_hole_out.step", body);
 
 	return 0;
 }

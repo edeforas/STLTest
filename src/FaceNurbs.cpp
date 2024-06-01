@@ -1,13 +1,20 @@
-#include "NurbsSurface.h"
+#include "FaceNurbs.h"
 
 ///////////////////////////////////////////////////////////////////////////
-NurbsSurface::NurbsSurface()
+FaceNurbs::FaceNurbs()
 { }
 
-NurbsSurface::~NurbsSurface()
+FaceNurbs::~FaceNurbs()
 { }
 
-void NurbsSurface::clear()
+void FaceNurbs::clear()
 { }
 
+void FaceNurbs::to_mesh(Mesh& m)
+{
+	m.clear();
+
+	//todo
+
+}
 ///////////////////////////////////////////////////////////////////////////

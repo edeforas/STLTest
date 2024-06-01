@@ -31,7 +31,7 @@ int main()
 	{
 		double radius=1.;
 		BodyFactory::SphereUV sphere(1.);
-		sphere.set_precision(100);
+		sphere.set_mesh_precision(100);
 		Mesh& m = sphere.mesh();
 		cout << "Mesh Volume: " << MeshMeasurements::volume(m) << endl;
 		cout << "Theorical Volume: " << 4. / 3. * 3.141592653 * (radius * radius * radius) << endl;

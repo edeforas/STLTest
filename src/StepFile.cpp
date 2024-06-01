@@ -5,9 +5,6 @@ using namespace std;
 
 #include "StepFile.h"
 
-
-
-
 namespace StepFile
 {   
     class StepLine
@@ -31,7 +28,7 @@ namespace StepFile
         string _type;
     };
 
-    bool save(const string& filename, const NurbsSurface& surf)
+    bool save(const string& filename, const Body& body)
     {
         ofstream f(filename);
         if (!f)
@@ -41,9 +38,9 @@ namespace StepFile
         return false;
     }
     ///////////////////////////////////////////////////////////////////////////
-	bool load(const string& filename, NurbsSurface& surf)
+	bool load(const string& filename, Body& body)
     {
-        surf.clear();
+        body.clear();
         ifstream f(filename);
         if (!f)
             return false;

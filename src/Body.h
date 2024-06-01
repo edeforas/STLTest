@@ -3,7 +3,6 @@
 
 #include "Mesh.h"
 #include "Transform.h"
-
 #include "Face.h"
 
 #include <vector>
@@ -18,16 +17,17 @@ class Body
 public:
     Body();
     virtual ~Body();
+    void clear();
 
     Transform& transform();
-    virtual void set_precision(int iPrecision);
+    virtual void set_mesh_precision(int iPrecision);
     void set_color(int iColor);
     virtual Mesh& mesh();
     
     vector<Face>& faces();
 
 protected:
-    virtual void compute_mesh() = 0;
+    virtual void compute_mesh();
     Mesh _mesh;
     int _iNbSegments;
     Transform _transform;

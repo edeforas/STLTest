@@ -10,6 +10,16 @@ double cubic(double a)
 	return a * a * a;
 }
 
+double Bernstein01(double u)
+{
+	return 1. - u;
+}
+
+double Bernstein11(double u)
+{
+	return u;
+}
+
 double Bernstein02(double u)
 {
 	return square(1. - u);

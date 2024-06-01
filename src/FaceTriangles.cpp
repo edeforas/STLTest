@@ -1,0 +1,20 @@
+#include "FaceTriangles.h"
+
+///////////////////////////////////////////////////////////////////////////
+FaceTriangles::FaceTriangles()
+{ }
+
+FaceTriangles::~FaceTriangles()
+{ }
+
+void FaceTriangles::clear()
+{ }
+
+void FaceTriangles::to_mesh(Mesh& m)
+{
+	m.clear();
+
+	//todo
+
+}
+///////////////////////////////////////////////////////////////////////////

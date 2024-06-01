@@ -15,11 +15,11 @@ int main()
 	
 	BodyFactory::Torus torus(15, 3);
 	torus.set_color(GREY);
-	torus.set_precision(32);
+	torus.set_mesh_precision(32);
 
 	BodyFactory::SphereUV sphere(10);
 	sphere.set_color(DARK_GREEN);
-	sphere.set_precision(32);
+	sphere.set_mesh_precision(32);
 	sphere.transform().set_global_translation(Point3(10, 0., 0.));
 
 	Image img(iWidth, iHeight, 4);

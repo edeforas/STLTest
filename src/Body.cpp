@@ -2,13 +2,19 @@
 
 ///////////////////////////////////////////////////////////////////////////
 Body::Body()
-{ 
-	_iNbSegments = 64;
-	_iColor = -1;
+{
+	clear();
 }
 
 Body::~Body()
 { }
+
+void Body::clear()
+{
+	_faces.clear();
+	_iNbSegments = 64;
+	_iColor = -1;
+}
 
 Transform& Body::transform()
 {
@@ -28,7 +34,7 @@ vector<Face>& Body::faces()
 	return _faces;
 }
 
-void Body::set_precision(int iPrecision)
+void Body::set_mesh_precision(int iPrecision)
 {
 	_iNbSegments = iPrecision;
 	_mesh.clear(); // must recompute everything next time
@@ -47,3 +53,6 @@ void Body::set_color(int iColor)
 }
 
 ///////////////////////////////////////////////////////////////////////////
+
+void Body::compute_mesh()
+{}
