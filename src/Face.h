@@ -2,6 +2,10 @@
 #define _Face_
 
 #include "Mesh.h"
+#include "Surface.h"
+
+#include <vector>
+using namespace std;
 
 ///////////////////////////////////////////////////////////////////////////
 class Face
@@ -12,9 +16,12 @@ public:
 
     void set_color(int iColor);
 
+    vector<Surface>& faces();
+
     void to_mesh(Mesh& m);
 
 private:
+    vector<Surface> _vSurfaces;
     int _iColor;
 };
 ///////////////////////////////////////////////////////////////////////////

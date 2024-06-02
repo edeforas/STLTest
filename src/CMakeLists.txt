@@ -29,9 +29,6 @@ set(CADTEST_FILES
 	NurbsCurve.cpp NurbsCurve.h
 	StepFile.cpp StepFile.h
 	
-	BezierTriangle.cpp BezierTriangle.h
-	BezierPatch.cpp BezierPatch.h
-	
 	Renderer.cpp Renderer.h
 	RendererCamera.cpp RendererCamera.h
 	RendererLight.cpp RendererLight.h

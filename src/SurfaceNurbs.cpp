@@ -8,11 +8,12 @@ SurfaceNurbs::~SurfaceNurbs()
 { }
 
 void SurfaceNurbs::clear()
-{ }
+{
+	//todo
+}
 
 void SurfaceNurbs::add_to_mesh(Mesh& m, int iNbSegments)
 {
-	m.clear();
 
 	//todo
 

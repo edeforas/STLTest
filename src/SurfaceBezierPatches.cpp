@@ -8,13 +8,17 @@ SurfaceBezierPatches::~SurfaceBezierPatches()
 { }
 
 void SurfaceBezierPatches::clear()
-{ }
+{
+	_vP.clear();
+}
 
 void SurfaceBezierPatches::add_to_mesh(Mesh& m, int iNbSegments)
 {
-	m.clear();
-
 	//todo
 
 }
 ///////////////////////////////////////////////////////////////////////////
+void SurfaceBezierPatches::set_P(const vector<Point3>& vP)
+{
+	_vP = vP;
+}

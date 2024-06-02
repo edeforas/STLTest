@@ -21,3 +21,8 @@ void Face::to_mesh(Mesh& m)
 {
 
 }
+
+vector<Surface>& Face::faces()
+{
+	return _vSurfaces;
+}
