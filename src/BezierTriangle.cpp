@@ -65,7 +65,7 @@ void BezierTriangle::clear()
 { }
 ///////////////////////////////////////////////////////////////////////////
 
-void BezierTriangle::to_mesh(Mesh& m)
+void BezierTriangle::add_to_mesh(Mesh& m)
 {
 	m.clear();
 

@@ -19,7 +19,7 @@ public:
 
     void clear();
 
-    void to_mesh(Mesh& m);
+    void add_to_mesh(Mesh& m);
 
 protected:
     vector<Point3> _vP;

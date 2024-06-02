@@ -19,7 +19,7 @@ void BezierPatch::clear()
 	_vP.clear();
 }
 
-void BezierPatch::to_mesh(Mesh& m)
+void BezierPatch::add_to_mesh(Mesh& m)
 {
 	m.clear();
 

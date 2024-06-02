@@ -1,23 +1,18 @@
-#include "Face.h"
+#include "Surface.h"
 
 #include <cassert>
 
 ///////////////////////////////////////////////////////////////////////////
-Face::Face()
+Surface::Surface()
 {
 	_iColor = 0x808080; //grey
 }
 
-Face::~Face()
+Surface::~Surface()
 { 
 }
 
-void Face::set_color(int iColor)
+void Surface::set_color(int iColor)
 {
 	_iColor = iColor;
-}
-
-void Face::to_mesh(Mesh& m)
-{
-
 }

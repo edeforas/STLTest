@@ -1,16 +1,16 @@
-#include "FaceBezierTriangles.h"
+#include "SurfaceTriangles.h"
 
 ///////////////////////////////////////////////////////////////////////////
-FaceBezierTriangles::FaceBezierTriangles()
+SurfaceTriangles::SurfaceTriangles()
 { }
 
-FaceBezierTriangles::~FaceBezierTriangles()
+SurfaceTriangles::~SurfaceTriangles()
 { }
 
-void FaceBezierTriangles::clear()
+void SurfaceTriangles::clear()
 { }
 
-void FaceBezierTriangles::to_mesh(Mesh& m)
+void SurfaceTriangles::add_to_mesh(Mesh& m, int iNbSegments)
 {
 	m.clear();
 

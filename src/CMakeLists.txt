@@ -3,14 +3,15 @@ set(CADTEST_FILES
 	BodyFactory.cpp BodyFactory.h
 	BodyUnion.cpp BodyUnion.h
 	BodyIntersection.cpp BodyIntersection.h
-	BodyDifference.cpp BodyDifference.h
-	Geometry.cpp Geometry.h
-	
+	BodyDifference.cpp BodyDifference.h	
 	Face.cpp Face.h
-	FaceTriangles.cpp FaceTriangles.h
-	FaceNurbs.cpp FaceNurbs.h
-	FaceBezierPatches.cpp FaceBezierPatches.h
-	FaceBezierTriangles.cpp FaceBezierTriangles.h
+
+	Surface.cpp Surface.h	
+	SurfaceTriangles.cpp SurfaceTriangles.h
+	SurfaceNurbs.cpp SurfaceNurbs.h
+	SurfaceBezierPatches.cpp SurfaceBezierPatches.h
+	SurfaceBezierTriangles.cpp SurfaceBezierTriangles.h
+	Geometry.cpp Geometry.h
 	
 	Mesh.cpp Mesh.h
 	MeshKernel.cpp MeshKernel.h

@@ -1,16 +1,16 @@
-#include "FaceTriangles.h"
+#include "SurfaceNurbs.h"
 
 ///////////////////////////////////////////////////////////////////////////
-FaceTriangles::FaceTriangles()
+SurfaceNurbs::SurfaceNurbs()
 { }
 
-FaceTriangles::~FaceTriangles()
+SurfaceNurbs::~SurfaceNurbs()
 { }
 
-void FaceTriangles::clear()
+void SurfaceNurbs::clear()
 { }
 
-void FaceTriangles::to_mesh(Mesh& m)
+void SurfaceNurbs::add_to_mesh(Mesh& m, int iNbSegments)
 {
 	m.clear();
 

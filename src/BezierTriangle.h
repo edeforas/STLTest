@@ -18,7 +18,7 @@ public:
 
     void clear();
 
-    void to_mesh(Mesh& m);
+    void add_to_mesh(Mesh& m);
 protected:
     Point3 _P1, _P2, _P3;
     Point3 _controlP1P2, _controlP2P1;
