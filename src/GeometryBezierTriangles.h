@@ -1,11 +1,10 @@
-#ifndef SurfaceBezierTriangles_
-#define SurfaceBezierTriangles_
+#ifndef GeometryBezierTriangles_
+#define GeometryBezierTriangles_
 
 #include "Mesh.h"
-#include "Surface.h"
 
 ///////////////////////////////////////////////////////////////////////////
-class SurfaceBezierTriangles : public Surface
+class GeometryBezierTriangles
 {
 public:
     SurfaceBezierTriangles();
@@ -17,7 +16,7 @@ public:
     void set_control_center(const Point3& controlCenter);
     void set_normals(const Point3& normalP1, const Point3& normalP2, const Point3& normalP3);
 
-    virtual void add_to_mesh(Mesh& m, int iNbSegments) override;
+    void add_to_mesh(Mesh& m, int iNbSegments) override;
 
 protected:
     Point3 _P1, _P2, _P3;

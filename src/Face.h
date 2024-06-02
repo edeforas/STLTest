@@ -16,12 +16,9 @@ public:
 
     void set_color(int iColor);
 
-    vector<Surface>& faces();
+    virtual void add_to_mesh(Mesh& m,int iNbSegments)=0;
 
-    void to_mesh(Mesh& m,int iNbSegments);
-
-private:
-    vector<Surface> _vSurfaces;
+protected:
     int _iColor;
 };
 ///////////////////////////////////////////////////////////////////////////

@@ -1,11 +1,11 @@
-#ifndef SurfaceNurbs_
-#define SurfaceNurbs_
+#ifndef FaceNurbs_
+#define FaceNurbs_
 
 #include "Mesh.h"
-#include "Surface.h"
+#include "Face.h"
 
 ///////////////////////////////////////////////////////////////////////////
-class SurfaceNurbs : public Surface
+class SurfaceNurbs : public Face
 {
 public:
     SurfaceNurbs();

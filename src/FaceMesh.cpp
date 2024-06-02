@@ -1,24 +1,24 @@
-#include "SurfaceMesh.h"
+#include "FaceMesh.h"
 
 ///////////////////////////////////////////////////////////////////////////
-SurfaceMesh::SurfaceMesh()
+FaceMesh::FaceMesh()
 { }
 
-SurfaceMesh::~SurfaceMesh()
+FaceMesh::~FaceMesh()
 { }
 
-void SurfaceMesh::clear()
+void FaceMesh::clear()
 {
 	_mesh.clear();
 }
 
-void SurfaceMesh::add_to_mesh(Mesh& m, int iNbSegments)
+void FaceMesh::add_to_mesh(Mesh& m, int iNbSegments)
 {
 	(void)iNbSegments;
 	m.add_mesh(_mesh);
 }
 ///////////////////////////////////////////////////////////////////////////
-Mesh& SurfaceMesh::mesh()
+Mesh& FaceMesh::mesh()
 {
 	return _mesh;
 }

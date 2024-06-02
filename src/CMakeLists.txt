@@ -6,11 +6,10 @@ set(CADTEST_FILES
 	BodyDifference.cpp BodyDifference.h	
 	Face.cpp Face.h
 
-	Surface.cpp Surface.h	
-	SurfaceMesh.cpp SurfaceMesh.h
-	SurfaceNurbs.cpp SurfaceNurbs.h
-	SurfaceBezierPatches.cpp SurfaceBezierPatches.h
-	SurfaceBezierTriangles.cpp SurfaceBezierTriangles.h
+	FaceMesh.cpp FaceMesh.h
+	FaceNurbs.cpp FaceNurbs.h
+	FaceBezierPatches.cpp FaceBezierPatches.h
+	FaceBezierTriangles.cpp FaceBezierTriangles.h
 	Geometry.cpp Geometry.h
 	
 	Mesh.cpp Mesh.h

@@ -1,7 +1,7 @@
 #ifndef SurfaceBezierPatches_
 #define SurfaceBezierPatches_
 
-#include "Surface.h"
+#include "Face.h"
 #include "Mesh.h"
 
 #include "Geometry.h"
@@ -9,11 +9,11 @@
 using namespace std;
 
 ///////////////////////////////////////////////////////////////////////////
-class SurfaceBezierPatches : public Surface
+class FaceBezierPatches : public Face
 {
 public:
-    SurfaceBezierPatches();
-    virtual ~SurfaceBezierPatches();
+    FaceBezierPatches();
+    virtual ~FaceBezierPatches();
     void clear();
 
     void set_points(const vector<Point3>& vP);
