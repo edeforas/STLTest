@@ -7,7 +7,7 @@ set(CADTEST_FILES
 	Face.cpp Face.h
 
 	Surface.cpp Surface.h	
-	SurfaceTriangles.cpp SurfaceTriangles.h
+	SurfaceMesh.cpp SurfaceMesh.h
 	SurfaceNurbs.cpp SurfaceNurbs.h
 	SurfaceBezierPatches.cpp SurfaceBezierPatches.h
 	SurfaceBezierTriangles.cpp SurfaceBezierTriangles.h

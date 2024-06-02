@@ -18,7 +18,7 @@ void SurfaceBezierPatches::add_to_mesh(Mesh& m, int iNbSegments)
 
 }
 ///////////////////////////////////////////////////////////////////////////
-void SurfaceBezierPatches::set_P(const vector<Point3>& vP)
+void SurfaceBezierPatches::set_points(const vector<Point3>& vP)
 {
 	_vP = vP;
 }

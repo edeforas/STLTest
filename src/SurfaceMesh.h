@@ -1,20 +1,22 @@
-#ifndef SurfaceTriangles_
-#define SurfaceTriangles_
+#ifndef SurfaceMesh_
+#define SurfaceMesh_
 
 #include "Mesh.h"
 #include "Surface.h"
 
 ///////////////////////////////////////////////////////////////////////////
-class SurfaceTriangles : public Surface
+class SurfaceMesh : public Surface
 {
 public:
-    SurfaceTriangles();
-    virtual ~SurfaceTriangles();
+    SurfaceMesh();
+    virtual ~SurfaceMesh();
     void clear();
 
+    Mesh& mesh();
     virtual void add_to_mesh(Mesh& m, int iNbSegments) override;
 
 protected:
+    Mesh _mesh;
 };
 ///////////////////////////////////////////////////////////////////////////
 

@@ -20,7 +20,7 @@ void SurfaceBezierTriangles::add_to_mesh(Mesh& m, int iNbSegments)
 
 }
 ///////////////////////////////////////////////////////////////////////////
-void SurfaceBezierTriangles::set_P(const Point3& P1, const Point3& P2, const Point3& P3)
+void SurfaceBezierTriangles::set_points(const Point3& P1, const Point3& P2, const Point3& P3)
 {
 	_P1 = P1;
 	_P2 = P2;
