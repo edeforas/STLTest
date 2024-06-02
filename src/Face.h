@@ -18,7 +18,7 @@ public:
 
     vector<Surface>& faces();
 
-    void to_mesh(Mesh& m);
+    void to_mesh(Mesh& m,int iNbSegments);
 
 private:
     vector<Surface> _vSurfaces;

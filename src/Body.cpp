@@ -12,7 +12,7 @@ Body::~Body()
 void Body::clear()
 {
 	_faces.clear();
-	_iNbSegments = 64;
+	_iNbSegments = 4;
 	_iColor = -1;
 }
 
@@ -34,9 +34,9 @@ vector<Face>& Body::faces()
 	return _faces;
 }
 
-void Body::set_mesh_precision(int iPrecision)
+void Body::set_mesh_precision(int iNbSegments)
 {
-	_iNbSegments = iPrecision;
+	_iNbSegments = iNbSegments;
 	_mesh.clear(); // must recompute everything next time
 }
 

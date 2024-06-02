@@ -20,7 +20,7 @@ public:
     void clear();
 
     Transform& transform();
-    virtual void set_mesh_precision(int iPrecision);
+    virtual void set_mesh_precision(int iNbSegments);
     void set_color(int iColor);
     virtual Mesh& mesh();
     
