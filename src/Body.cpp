@@ -7,7 +7,10 @@ Body::Body()
 }
 
 Body::~Body()
-{ }
+{ 
+	for (auto f : _faces)
+		delete f;
+}
 
 void Body::clear()
 {
@@ -29,9 +32,14 @@ Mesh& Body::mesh()
 	return _mesh;
 }
 
-vector<Face>& Body::faces()
+vector<Face*>& Body::faces()
 {
 	return _faces;
+}
+
+void Body::add_face( Face* f)
+{
+	_faces.push_back(f);
 }
 
 void Body::set_mesh_precision(int iNbSegments)
@@ -48,7 +56,7 @@ void Body::set_color(int iColor)
 	auto& f = faces();
 	for (auto& fa : f)
 	{
-		fa.set_color(iColor);
+		fa->set_color(iColor);
 	}
 }
 

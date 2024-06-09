@@ -4,6 +4,10 @@
 FaceBezierTriangles::FaceBezierTriangles()
 { }
 
+FaceBezierTriangles::FaceBezierTriangles(const FaceBezierTriangles & f)
+{
+}
+
 FaceBezierTriangles::~FaceBezierTriangles()
 { }
 

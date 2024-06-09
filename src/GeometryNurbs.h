@@ -1,18 +1,17 @@
-#ifndef FaceNurbs_
-#define FaceNurbs_
+#ifndef GeometryNurbs_
+#define GeometryNurbs_
 
 #include "Mesh.h"
-#include "Face.h"
 
 ///////////////////////////////////////////////////////////////////////////
-class SurfaceNurbs : public Face
+class GeometryNurbs
 {
 public:
-    SurfaceNurbs();
-    virtual ~SurfaceNurbs();
+    GeometryNurbs();
+    virtual ~GeometryNurbs();
     void clear();
 
-    virtual void add_to_mesh(Mesh& m, int iNbSegments) override;
+    virtual void add_to_mesh(Mesh& m, int iNbSegments);
 
 protected:
 };

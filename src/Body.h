@@ -24,7 +24,8 @@ public:
     void set_color(int iColor);
     virtual Mesh& mesh();
     
-    vector<Face>& faces();
+    void add_face(Face* f); 
+    vector<Face*>& faces();
 
 protected:
     virtual void compute_mesh();
@@ -33,7 +34,7 @@ protected:
     Transform _transform;
     int _iColor; // -1 for no custom color
 	
-	vector<Face> _faces;
+	vector<Face*> _faces;
 };
 ///////////////////////////////////////////////////////////////////////////
 

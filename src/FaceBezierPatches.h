@@ -1,5 +1,5 @@
-#ifndef SurfaceBezierPatches_
-#define SurfaceBezierPatches_
+#ifndef FaceBezierPatches
+#define FaceBezierPatches_
 
 #include "Face.h"
 #include "Mesh.h"
@@ -13,6 +13,7 @@ class FaceBezierPatches : public Face
 {
 public:
     FaceBezierPatches();
+    FaceBezierPatches(const FaceBezierPatches& f);
     virtual ~FaceBezierPatches();
     void clear();
 

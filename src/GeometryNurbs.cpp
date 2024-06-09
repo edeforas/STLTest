@@ -1,18 +1,18 @@
-#include "SurfaceNurbs.h"
+#include "GeometryNurbs.h"
 
 ///////////////////////////////////////////////////////////////////////////
-SurfaceNurbs::SurfaceNurbs()
+GeometryNurbs::GeometryNurbs()
 { }
 
-SurfaceNurbs::~SurfaceNurbs()
+GeometryNurbs::~GeometryNurbs()
 { }
 
-void SurfaceNurbs::clear()
+void GeometryNurbs::clear()
 {
 	//todo
 }
 
-void SurfaceNurbs::add_to_mesh(Mesh& m, int iNbSegments)
+void GeometryNurbs::add_to_mesh(Mesh& m, int iNbSegments)
 {
 
 	//todo

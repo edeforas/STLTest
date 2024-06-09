@@ -9,7 +9,9 @@ class FaceMesh : public Face
 {
 public:
     FaceMesh();
+    FaceMesh(const FaceMesh & f);
     virtual ~FaceMesh();
+
     void clear();
 
     Mesh& mesh();

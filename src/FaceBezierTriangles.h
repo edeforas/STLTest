@@ -9,6 +9,7 @@ class FaceBezierTriangles : public Face
 {
 public:
     FaceBezierTriangles();
+    FaceBezierTriangles(const FaceBezierTriangles& f);
     virtual ~FaceBezierTriangles();
     void clear();
 

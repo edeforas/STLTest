@@ -4,6 +4,10 @@
 FaceNurbs::FaceNurbs()
 { }
 
+FaceNurbs::FaceNurbs(const FaceNurbs & f)
+{
+}
+
 FaceNurbs::~FaceNurbs()
 { }
 
