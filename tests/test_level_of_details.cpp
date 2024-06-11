@@ -16,7 +16,7 @@ int main()
 		BodyFactory::SphereUV sphere(50); // for now sphereUV, will be replaced by sphere geodesic
 		sphere.set_mesh_precision(2<<iLevel);
 		sphere.transform().set_global_translation(Point3(120.*iLevel, 0., 0.));
-		m.add_mesh(sphere.mesh());
+		m.add_mesh(sphere.to_mesh());
 	}
 
 	cout << "Saving: spheres_level_of_details.obj" << endl;

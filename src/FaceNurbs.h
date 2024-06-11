@@ -14,6 +14,7 @@ public:
     virtual ~FaceNurbs();
     void clear();
 
+    virtual FaceNurbs* clone() const override;
     virtual void add_to_mesh(Mesh& m, int iNbSegments) override;
 
 protected:

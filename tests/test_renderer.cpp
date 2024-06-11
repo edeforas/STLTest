@@ -34,8 +34,8 @@ int main()
 	{
 		eng.clear();
 		eng.set_camera(0., 0., 0., dAhead, i, i/2., i/3., dZoom);
-		eng.draw_mesh(torus.mesh());
-		eng.draw_mesh(sphere.mesh());
+		eng.draw_mesh(torus.to_mesh());
+		eng.draw_mesh(sphere.to_mesh());
 
 		string sFile = string("solid_") + to_string(i) + ".bmp";
 

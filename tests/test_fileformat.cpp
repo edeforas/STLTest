@@ -15,8 +15,8 @@ int main()
 	bu.set(cylinder,sphere);
 
 	//test save
-	STLFile::save("capsule.stl", bu.mesh());
-	OBJFile::save("capsule.obj", bu.mesh());
+	STLFile::save("capsule.stl", bu.to_mesh());
+	OBJFile::save("capsule.obj", bu.to_mesh());
 
 	//test load and save stl
 	Mesh m1;

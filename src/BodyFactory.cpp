@@ -271,7 +271,7 @@ namespace BodyFactory
 		Icosahedron ico(_radius);
 		Mesh m;
 		MeshTessellate mt;
-		mt.compute(ico.mesh(), _iNbSegments, _mesh);
+		mt.compute(ico.to_mesh(), _iNbSegments, _mesh);
 
 		_transform.apply(_mesh);
 	}

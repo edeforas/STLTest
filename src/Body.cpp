@@ -24,12 +24,17 @@ Transform& Body::transform()
 	return _transform;
 }
 
-Mesh& Body::mesh()
+void Body::to_mesh(Mesh& m)
 {
-	compute_mesh();
-	if(_iColor!=-1)
-		_mesh.set_color(_iColor);
-	return _mesh;
+	//compute_mesh();
+//	if(_iColor!=-1)
+//		_mesh.set_color(_iColor);
+
+	for (auto& f : _faces)
+		f->add_to_mesh(m, _iNbSegments);
+
+
+	
 }
 
 vector<Face*>& Body::faces()
@@ -37,9 +42,9 @@ vector<Face*>& Body::faces()
 	return _faces;
 }
 
-void Body::add_face( Face* f)
+void Body::add_face(const Face& f)
 {
-	_faces.push_back(f);
+	_faces.push_back(f.clone());
 }
 
 void Body::set_mesh_precision(int iNbSegments)

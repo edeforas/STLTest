@@ -13,6 +13,7 @@ public:
     virtual ~FaceBezierTriangles();
     void clear();
 
+    virtual FaceBezierTriangles* clone() const override;
     virtual void add_to_mesh(Mesh& m, int iNbSegments) override;
 
 protected:

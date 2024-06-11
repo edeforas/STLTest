@@ -17,6 +17,8 @@ public:
     virtual ~FaceBezierPatches();
     void clear();
 
+    virtual FaceBezierPatches* clone() const override;
+
     void set_points(const vector<Point3>& vP);
 
     virtual void add_to_mesh(Mesh& m, int iNbSegments) override;

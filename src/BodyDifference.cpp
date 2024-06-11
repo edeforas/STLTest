@@ -24,7 +24,7 @@ void BodyDifference::compute_mesh()
 {
 	Mesh Aonly, Bonly, AinB, BinA;
 	MeshBoolean mb;
-	mb.split_meshes(_A->mesh(), _B->mesh(), Aonly, Bonly, AinB, BinA);
+	mb.split_meshes(_A->to_mesh(), _B->to_mesh(), Aonly, Bonly, AinB, BinA);
 
 	_mesh = Aonly;
 	

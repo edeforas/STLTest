@@ -22,9 +22,9 @@ public:
     Transform& transform();
     virtual void set_mesh_precision(int iNbSegments);
     void set_color(int iColor);
-    virtual Mesh& mesh();
+    virtual void to_mesh(Mesh& m);
     
-    void add_face(Face* f); 
+    void add_face(const Face& f); 
     vector<Face*>& faces();
 
 protected:
