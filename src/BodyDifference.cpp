@@ -22,9 +22,12 @@ void BodyDifference::set( Body& A, Body& B)
 
 void BodyDifference::compute_mesh()
 {
-	Mesh Aonly, Bonly, AinB, BinA;
+	Mesh Aonly, Bonly, AinB, BinA,meshA, meshB;
 	MeshBoolean mb;
-	mb.split_meshes(_A->to_mesh(), _B->to_mesh(), Aonly, Bonly, AinB, BinA);
+	_A->to_mesh(meshA);
+	_B->to_mesh(meshB);
+
+	mb.split_meshes(meshA, meshB, Aonly, Bonly, AinB, BinA);
 
 	_mesh = Aonly;
 	

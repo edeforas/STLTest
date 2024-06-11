@@ -23,7 +23,9 @@ int main()
 	cout << "Computing Union..." << endl;
 	BodyUnion bu;
 	bu.set(sphere, sphere2);
-	if (!OBJFile::save("two_spheres_union.obj", bu.to_mesh()))
+	Mesh meshUnion;
+	bu.to_mesh(meshUnion);
+	if (!OBJFile::save("two_spheres_union.obj", meshUnion))
 	{
 		cout << "Unable to set two_spheres_union.obj, check path and rights." << endl;
 		return -1;
@@ -32,7 +34,9 @@ int main()
 	cout << "Computing Intersection..." << endl;
 	BodyIntersection bi;
 	bi.set(sphere, sphere2);
-	if (!OBJFile::save("two_spheres_intersection.obj", bi.to_mesh()))
+	Mesh meshInter;
+	bi.to_mesh(meshInter);
+	if (!OBJFile::save("two_spheres_intersection.obj", meshInter))
 	{
 		cout << "Unable to save two_spheres_intersection.obj, check path and rights." << endl;
 		return -1;
@@ -41,7 +45,9 @@ int main()
 	cout << "Computing Difference..." << endl;
 	BodyDifference bd;
 	bd.set(sphere, sphere2);
-	if (!OBJFile::save("two_spheres_difference.obj", bd.to_mesh()))
+	Mesh meshDiff;
+	bd.to_mesh(meshDiff);
+	if (!OBJFile::save("two_spheres_difference.obj", meshDiff))
 	{
 		cout << "Unable to save two_spheres_difference.obj, check path and rights." << endl;
 		return -1;

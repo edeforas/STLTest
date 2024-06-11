@@ -15,7 +15,8 @@ int main()
 	{
 		// test triangles deleted
 		BodyFactory::SphereUV sphere(100.);
-		Mesh& m = sphere.to_mesh();
+		Mesh m;
+		sphere.to_mesh(m);
 		for (int i = 0; i < m.nb_triangles(); i++)
 		{
 			if (rand() / (float)RAND_MAX > 0.5)
@@ -32,7 +33,8 @@ int main()
 	{
 		// test triangles subdivision
 		BodyFactory::SphereGeodesic sphere(100.);
-		Mesh& m = sphere.to_mesh();
+		Mesh m;
+		sphere.to_mesh(m);
 
 		// two scales split
 		for (int iScale = 0; iScale < 2; iScale++)

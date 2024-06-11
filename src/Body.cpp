@@ -29,12 +29,10 @@ void Body::to_mesh(Mesh& m)
 	//compute_mesh();
 //	if(_iColor!=-1)
 //		_mesh.set_color(_iColor);
-
+		m.clear();
+	
 	for (auto& f : _faces)
 		f->add_to_mesh(m, _iNbSegments);
-
-
-	
 }
 
 vector<Face*>& Body::faces()

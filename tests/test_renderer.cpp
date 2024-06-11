@@ -32,10 +32,15 @@ int main()
 
 	for (int i = 0; i < 360; i += 10)
 	{
+		Mesh m;
 		eng.clear();
 		eng.set_camera(0., 0., 0., dAhead, i, i/2., i/3., dZoom);
-		eng.draw_mesh(torus.to_mesh());
-		eng.draw_mesh(sphere.to_mesh());
+		
+		torus.to_mesh(m);
+		eng.draw_mesh(m);
+
+		sphere.to_mesh(m);
+		eng.draw_mesh(m);
 
 		string sFile = string("solid_") + to_string(i) + ".bmp";
 

@@ -13,10 +13,12 @@ int main()
 
 	BodyUnion bu;
 	bu.set(cylinder,sphere);
+	Mesh meshCapsule;
+	bu.to_mesh(meshCapsule);
 
 	//test save
-	STLFile::save("capsule.stl", bu.to_mesh());
-	OBJFile::save("capsule.obj", bu.to_mesh());
+	STLFile::save("capsule.stl", meshCapsule);
+	OBJFile::save("capsule.obj", meshCapsule);
 
 	//test load and save stl
 	Mesh m1;
