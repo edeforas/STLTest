@@ -14,7 +14,7 @@ class FaceBezierPatches : public Face
 public:
     FaceBezierPatches();
     FaceBezierPatches(const FaceBezierPatches& f);
-    virtual ~FaceBezierPatches();
+    virtual ~FaceBezierPatches() override;
     void clear();
 
     virtual FaceBezierPatches* clone() const override;

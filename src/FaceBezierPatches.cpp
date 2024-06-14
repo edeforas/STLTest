@@ -4,10 +4,9 @@
 FaceBezierPatches::FaceBezierPatches()
 { }
 
-FaceBezierPatches::FaceBezierPatches(const FaceBezierPatches & f)
-{
-	_vP = f._vP;
-}
+FaceBezierPatches::FaceBezierPatches(const FaceBezierPatches & f):
+	_vP(f._vP)
+{ }
 
 FaceBezierPatches::~FaceBezierPatches()
 { }

@@ -2,10 +2,6 @@
 #define _Face_
 
 #include "Mesh.h"
-#include "Surface.h"
-
-#include <vector>
-using namespace std;
 
 ///////////////////////////////////////////////////////////////////////////
 class Face

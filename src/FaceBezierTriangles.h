@@ -10,7 +10,7 @@ class FaceBezierTriangles : public Face
 public:
     FaceBezierTriangles();
     FaceBezierTriangles(const FaceBezierTriangles& f);
-    virtual ~FaceBezierTriangles();
+    virtual ~FaceBezierTriangles() override;
     void clear();
 
     virtual FaceBezierTriangles* clone() const override;

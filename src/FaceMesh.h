@@ -10,7 +10,7 @@ class FaceMesh : public Face
 public:
     FaceMesh();
     FaceMesh(const FaceMesh & f);
-    virtual ~FaceMesh();
+    virtual ~FaceMesh() override;
     void clear();
 
     virtual FaceMesh* clone() const override;

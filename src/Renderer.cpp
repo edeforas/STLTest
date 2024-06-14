@@ -176,7 +176,7 @@ bool Renderer::draw_triangle_1color(const Point3& A, const Point3& B, const Poin
 	{
 		//exchange D and B
 		int tmpx = bx; bx = dx; dx = tmpx;
-		int tmpy = by; by = dy; dy = tmpy;
+		int tmpy = by; by = dy; //dy = tmpy;
 		double tmpw = bw; bw = dw; dw = tmpw;
 	}
 

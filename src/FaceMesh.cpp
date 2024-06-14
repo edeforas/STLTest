@@ -4,10 +4,9 @@
 FaceMesh::FaceMesh()
 { }
 
-FaceMesh::FaceMesh(const FaceMesh & f)
-{
-	_mesh = f._mesh;
-}
+FaceMesh::FaceMesh(const FaceMesh & f):
+	_mesh(f._mesh)
+{ }
 
 FaceMesh::~FaceMesh()
 { }

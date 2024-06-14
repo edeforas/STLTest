@@ -150,12 +150,12 @@ Line3::Line3(const Point3& p1, const Point3& p2):
 	_p2(p2)
 { }
 
-Point3 Line3::p1() const
+const Point3& Line3::p1() const
 {
 	return _p1;
 }
 
-Point3 Line3::p2() const
+const Point3& Line3::p2() const
 {
 	return _p2;
 }
@@ -178,12 +178,12 @@ Segment3::Segment3(const Point3& p1, const Point3& p2):
 	_p2(p2)
 { }
 
-Point3 Segment3::p1() const
+const Point3& Segment3::p1() const
 {
 	return _p1;
 }
 
-Point3 Segment3::p2() const
+const Point3& Segment3::p2() const
 {
 	return _p2;
 }
